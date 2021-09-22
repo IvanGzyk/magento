@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/engepecas-pedidos/pedidos" method="GET">
+		<service class="Engepecas\Pedidos\Api\PedidosManagementInterface" method="getPedidos"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+</routes>

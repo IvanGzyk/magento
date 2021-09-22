@@ -1,0 +1,7 @@
+"instance_id","instance_type","theme_id","title","store_ids","widget_parameters","sort_order"
+"2","Magento\Cms\Block\Widget\Block","4","block_1","0","{""block_id"":""11""}","1"
+"3","Magento\Cms\Block\Widget\Block","4","block_2","0","{""block_id"":""12""}","10"
+"7","Magento\Cms\Block\Widget\Block","4","block_3","0","{""block_id"":""13""}","7"
+"14","Magento\Cms\Block\Widget\Block","4","block_0","0","{""block_id"":""39""}","0"
+"15","Magento\Catalog\Block\Product\Widget\NewWidget","4","New Products","0","{""display_type"":""all_products"",""show_pager"":""0"",""products_count"":""4"",""cache_lifetime"":"""",""page_var_name"":""pgxpwu""}","3"
+"16","Magento\CatalogWidget\Block\Product\ProductsList","4","Special Products","0","{""title"":""Special Products"",""show_pager"":""0"",""products_count"":""4"",""cache_lifetime"":"""",""conditions"":{""1"":{""type"":""Magento\\CatalogWidget\\Model\\Rule\\Condition\\Combine"",""aggregator"":""all"",""value"":""1"",""new_child"":""""},""1--1"":{""type"":""Magento\\CatalogWidget\\Model\\Rule\\Condition\\Product"",""attribute"":""category_ids"",""operator"":""=="",""value"":""5""}},""page_var_name"":""pwkbtx""}","4"

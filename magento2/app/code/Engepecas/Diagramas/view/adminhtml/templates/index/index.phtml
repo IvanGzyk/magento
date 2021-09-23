@@ -1,5 +1,4 @@
 <?php
-ini_set('max_input_vars', 10000);
 ini_set('memory_limit', '2G');
 /**
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
@@ -21,84 +20,6 @@ ini_set('memory_limit', '2G');
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-
-<!--------------------------------------------------------------------------------------------------->
-<div class="form_parent">
-    <form class="form" method="post" id="frm_attachment" enctype="multipart/form-data" autocomplete="off">
-        <div class="admin__field field field-email">
-            <label class="label admin__field-label"><span>Carregar IMG</span></label>
-            <div class="admin__field-control control">
-                <button type="button" class="scalable action-show-hide"
-                    id="uploadAttachment"><span><span><span>Upload</span></span></span></button>
-                <input type="file" id="attachment" name="attachment" style="display: none;" />
-            </div>
-        </div>
-    </form>
-</div>
-<div id="attachmentFiles"></div>
-
-
-<script>
-require(['jquery'], function($) {
-    $(document).ready(function($) {
-
-        $(document).on('click', '#attachmentFiles .action-remove', function() {
-            if (window.confirm("Are you sure you want to delete?")) {
-                var attachmentPath = $(this).attr("data-image");
-                var divID = $(this).parents(".base-image").attr("id");
-                var imageID = $(this).parents(".base-image").find(".hiddneattachID").val();
-
-                jQuery.ajax({
-                    url: "<?php echo $block->getBaseUrl() . 'admin/diagramas/action/deleteAttachment?isAjax=true' ?>",
-                    type: "POST",
-                    data: {
-                        filename: attachmentPath,
-                        form_key: window.FORM_KEY,
-                        imageID: imageID
-                    },
-                    showLoader: true,
-                    success: function(response) {
-                        if (response.success == true) {
-                            $(".base-image#" + divID).remove();
-                        }
-                        alert("Sucesso! \n"+response.message);
-                    },
-                    error: function(response) {
-                        alert("Error: \n"+response.message);
-                    }
-                });
-            }
-        });
-
-        $('#uploadAttachment').click(function() {
-            $('#attachment').trigger('click');
-        });
-
-        $("#attachment").change(function() {
-            var data = $("#frm_attachment").get(0);
-            jQuery.ajax({
-                url: "<?php echo $block->getBaseUrl() . 'admin/diagramas/action/addAttachment?isAjax=true' ?>",
-                type: "POST",
-                data: new FormData(data),
-                processData: false,
-                contentType: false,
-                showLoader: true,
-                success: function(response) {
-                    alert("Sucesso!\n"+response.message);
-                    $("#attachmentFiles").append(response.data.html);
-                    $('#frm_attachment')[0].reset();
-                },
-                error: function(response) {
-                    alert('Eror: \n'+response.message);
-                    $('#frm_attachment')[0].reset();
-                }
-            });
-        });
-    });
-});
-</script>
-<!--------------------------------------------------------------------------------------------------->
-
 <?php
 $img = '';
 $img_tmp = '';
@@ -109,7 +30,6 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 
 $url =$baseURL_l."diagramas/index/index";
 
-$request = $this->getRequest()->getParams();
 if(isset($_FILES['arquivo']['name'])){
     $img = $_FILES['arquivo']['name'];
     $img_tmp = $_FILES['arquivo']['tmp_name'];
@@ -172,7 +92,7 @@ if(isset($img_cam)){
 <!-- Optional JavaScript -->
 <script>
 let info = document.getElementById('info');
-let img = document.querySelector('img');
+let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
 let titulo = document.getElementById('titulo');
 let id = document.getElementById('id');

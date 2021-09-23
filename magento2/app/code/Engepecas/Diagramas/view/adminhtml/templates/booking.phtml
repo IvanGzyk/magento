@@ -1,0 +1,46 @@
+<style>
+    #imagem{
+        position:relative;
+        margin-top: 0;
+    }
+</style>
+<div id="imagem"><img id="uploadPreview"/></div>
+</br>
+
+<input id="uploadImage" type="file" name="myPhoto" onchange="PreviewImage();" />
+
+<script type="text/javascript">
+function PreviewImage() {
+    var oFReader = new FileReader();
+    let $imagem = document.getElementById("uploadImage");
+    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+
+    oFReader.onload = function (oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+};
+</script>
+
+<?php
+//$file = (array) $this->getRequest()->getPost();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
+$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+$url = $baseURL_l."diagramas/index/index";
+
+//echo '<h1>'.$url.'</h1>';
+?>
+<!--
+<div class="form_parent">
+    <form action="<?php //echo $url ?>" class="form" method="post" enctype="multipart/form-data">
+        <div class="admin__field field field-email">
+            <label class="label admin__field-label"><span>Carregar IMG</span></label>
+            <div class="admin__field-control control">
+                <input type="file" name="imagem">
+                <input type="text" name="firstname">
+                <button type="submit" class="scalable action-show-hide">Upload</button>
+            </div>
+        </div>
+    </form>
+</div>
+-->

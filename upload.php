@@ -1,4 +1,13 @@
 <?php
+require_once 'conexao/conexao.php';
+$db = new Conexao();
+$query = "SELECT  * FROM `magento`.`catalog_product_entity_text` LIMIT 1000;";
+foreach ($db->con->query($query) as $row) {
+    echo '<pre>';
+    print_r($row);
+    echo '</pre>';
+}
+
 if(isset($_FILES['myPhoto']['name'])){
     $img = $_FILES['myPhoto']['name'];
     $img_tmp = $_FILES['myPhoto']['tmp_name'];

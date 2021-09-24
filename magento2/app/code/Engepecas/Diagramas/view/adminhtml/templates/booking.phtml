@@ -1,47 +1,77 @@
 <style>
-    #imagem{
-        position:relative;
-        margin-top: 0;
-    }
+#imagem {
+    position: relative;
+    margin-top: 0;
+}
+
+#Enviar {
+    display: none;
+}
+
+<?php print_r($_REQUEST);
+$url=$this->getUrl('admin/diagramas/index/index', ['_secure'=> true]);
+?>
 </style>
-<div id="imagem"><img id="uploadPreview"/></div>
-</br>
-<div class="form-group">
-    <input id="uploadImage" type="file" class="form-control-file" name="myPhoto" onchange="PreviewImage();" />
+
+<div id="imagem" style="text-align: center;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <img id="uploadPreview" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!--$this->getUrl('admin/diagramas/index/index', ['_secure' => true]);-->
+                <form id="upload" action="/upload.php" method="POST" enctype="multipart/form-data">
+                    <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
+                        onchange="PreviewImage();" />
+                    <button id="Enviar" class="btn btn-primary" type="submit">Salvar Imagem</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+</br>
 
 <script type="text/javascript">
 function PreviewImage() {
+    let imagem = document.getElementById("uploadImage");
+    let enviar = document.getElementById('Enviar');
     var oFReader = new FileReader();
-    let $imagem = document.getElementById("uploadImage");
-    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
-
-    oFReader.onload = function (oFREvent) {
+    oFReader.readAsDataURL(imagem.files[0]);
+    oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
+        imagem.style.display = 'none';
+        enviar.style.display = 'block';
     };
 };
+
+require(['jquery', 'jquery/ui'], function($) {
+
+    var form = $("#upload")[0];
+    var enviar = $("#Enviar");
+    enviar.on("click", function(event) {
+        var data = new FormData(form);
+        $.ajax({
+            url: form.action,
+            data: data,
+            contentType: false,
+            processData: false,
+            type: form.method,
+            success: function(data) {
+                console.log(data);
+            }
+        });
+        return false;
+    });
+});
 </script>
 
 <?php
-//$file = (array) $this->getRequest()->getPost();
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $url = $baseURL_l."diagramas/index/index";
-
-//echo '<h1>'.$url.'</h1>';
 ?>
-<!--
-<div class="form_parent">
-    <form action="<?php //echo $url ?>" class="form" method="post" enctype="multipart/form-data">
-        <div class="admin__field field field-email">
-            <label class="label admin__field-label"><span>Carregar IMG</span></label>
-            <div class="admin__field-control control">
-                <input type="file" name="imagem">
-                <input type="text" name="firstname">
-                <button type="submit" class="scalable action-show-hide">Upload</button>
-            </div>
-        </div>
-    </form>
-</div>
--->

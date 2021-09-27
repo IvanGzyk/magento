@@ -9,7 +9,8 @@ ini_set('memory_limit', '2G');
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
-$caminho = $baseURL_l.'magento2/pub/media/img/';
+$caminho = $baseURL_l.'pub/media/img/';
+echo $caminho;
 ?>
 
 <head>
@@ -132,7 +133,7 @@ function adicionar() {
 \t<div class="modal-dialog">
 \t\t<div class="modal-content">
 \t\t\t<div class="modal-header">
-\t\t\t\t<button type="button" class="close" data-dismiss="modal">&times;</button>
+\t\t\t\t<button type="button" class="close" data-dismiss="modal">X</button>
 \t\t\t</div>
 \t\t\t<div class="modal-body">
 \t\t\t\t<h2>${titulo.value}</h2>
@@ -155,6 +156,11 @@ function gerarInfo() {
             var texto = `
 <input type="hidden" name="id_prod" value="${id_prod.value}">
 <textarea class="form-control" name="html" rows="50">
+<head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
 <div class="container-fluid" style="align: center;">
 \t<img src="`+file+`" usemap="#image_map">
 \t<map name="image_map">\n

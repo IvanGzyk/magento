@@ -25,6 +25,10 @@ $caminho = $baseURL_l.'pub/media/img/';
         position: absolute;
         display: none;
     }
+
+    #salva{
+        display: none;
+    }
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -56,17 +60,22 @@ if(isset($img_cam)){
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Titulo</label>
+                            <label>Titulo</label>
+                            <small>(Titulo que ira aparecer no Modal)</small>
                         <input type="text" class="form-control" name="titulo" id="titulo">
                         <label>ID Modal</label>
+                        <small>(ID para identificar o modal, deve ser unico para cada modal)</small>
                         <input type="text" class="form-control" name="id" id="id">
                         <label>link para peça</label>
+                        <small>(Link para carrinho de compras da peça selecionada)</small>
                         <input type="text" class="form-control" name="link" id="link">
                         <label>ID Produto</label>
+                        <small>(ID do produto para o qual vai mostrar o diagrama)</small>
                         <input type="text" class="form-control" name="id_prod" id="id_prod">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Descrição</label>
+                        <small>(descrição da peça selecionada)</small>
                         <textarea class="form-control" name="desc" id="desc" cols="30" rows="10"></textarea>
                     </div>
                 </div>
@@ -82,7 +91,7 @@ if(isset($img_cam)){
             <form action="<?=$url?>" method="POST" id="upload">
                 <div id="info">
                 </div>
-                <button type="submit" class="btn btn-primary text-white">Salvar</button>
+                <button type="submit" id="salva" class="btn btn-primary text-white">Salvar</button>
             </form>
         </div>
     </div>
@@ -101,6 +110,7 @@ let id = document.getElementById('id');
 let id_prod = document.getElementById('id_prod');
 let desc = document.getElementById('desc');
 let link = document.getElementById('link');
+let sava = document.getElementById('salva');
 const add = document.querySelector('#add');
 let img_cam = document.querySelector('#uploadImage');
 let inicio;
@@ -129,10 +139,10 @@ function adicionar() {
 \t<div class="modal-dialog">
 \t\t<div class="modal-content">
 \t\t\t<div class="modal-header">
+\t\t\t\t<h5 class="modal-title">${titulo.value}</h5>
 \t\t\t\t<button type="button" class="close" data-dismiss="modal">X</button>
 \t\t\t</div>
 \t\t\t<div class="modal-body">
-\t\t\t\t<h2>${titulo.value}</h2>
 \t\t\t\t<p>${desc.value}</p>
 \t\t\t\t<a class="btn btn-primary" href="${link.value}">Comprar</a>
 \t\t\t</div>
@@ -143,6 +153,7 @@ function adicionar() {
 \t</div>
 </div>\n
             `;
+            salva.style.display = 'block';
     gerarInfo();
 }
 

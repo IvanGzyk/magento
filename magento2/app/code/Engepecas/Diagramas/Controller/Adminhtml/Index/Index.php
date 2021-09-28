@@ -22,6 +22,10 @@ class Index extends \Magento\Backend\App\Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
+        if(isset($_POST['html'])){
+            print_r($_POST);
+            exit();
+        }
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
@@ -31,6 +35,7 @@ class Index extends \Magento\Backend\App\Action
      *
      * @return \Magento\Framework\Controller\ResultInterface
      */
+
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();

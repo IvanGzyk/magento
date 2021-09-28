@@ -25,6 +25,8 @@ services:
     build: .
     volumes:
        - ./:/var/www/html/
+       - "./dockerfiles/config/php.ini-development:/usr/local/etc/php/php.ini-development"
+       - "./dockerfiles/config/php.ini-production:/usr/local/etc/php/php.ini-production"
     ports:
        - 5000:80
     links:

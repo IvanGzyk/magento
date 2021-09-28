@@ -4,7 +4,7 @@ chmod -R 777 magento2/
 
 cd magento2/
 
-php -dmemory_limit=2G bin/magento setup:static-content:deploy pt_BR -f
+php -dmemory_limit=6G bin/magento setup:static-content:deploy pt_BR -f
 
 cd ..
 
@@ -22,4 +22,4 @@ php bin/magento cache:flush
 
 a2enmod rewrite
 
-service apachectl restart
+service apache2 restart

@@ -1,10 +1,14 @@
 <?php
-ini_set('max_input_vars', 10000);
-ini_set('memory_limit', '2G');
 /**
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
  */
 //echo $block->getBaseUrl() . 'admin/diagramas/action/addAttachment';
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
+$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+$caminho = $baseURL_l.'pub/media/img/';
+echo $caminho;
 ?>
 
 <head>
@@ -14,6 +18,11 @@ ini_set('memory_limit', '2G');
         position: absolute;
         display: none;
         background-color: rgba(255, 0, 0, 0.3);
+    }
+
+    #posicao {
+        position: absolute;
+        display: none;
     }
     </style>
     <!-- Bootstrap CSS -->
@@ -31,13 +40,6 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 
 $url =$baseURL_l."diagramas/index/index";
 
-$request = $this->getRequest()->getParams();
-if(isset($_FILES['arquivo']['name'])){
-    $img = $_FILES['arquivo']['name'];
-    $img_tmp = $_FILES['arquivo']['tmp_name'];
-@    copy($img_tmp,"/var/www/html/magento2/pub/media/img/$img");
-    $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/$img";
-}
 if($_POST){
     echo $_POST['html'];
 }
@@ -54,6 +56,7 @@ if($_POST){
 if(isset($img_cam)){
 ?>
 <div id="selecao"></div>
+<div id="posicao"></div>
 <img src="<?=$img_cam?>" alt="" />
 <div class="container">
     <div class="row">
@@ -85,9 +88,13 @@ if(isset($img_cam)){
             </form><br>
         </div>
     </div>
+    <?php
+    $url=$this->getUrl('admin/diagramas/upload/upload', ['_secure'=> true]);
+    ?>
     <div class="row">
         <div class="col-12">
-            <form action="<?= $url ?>" method="POST">
+            <!--<form action="/upload.php" method="POST" id="upload">-->
+            <form action="<?=$url?>" method="POST" id="upload">
                 <div id="info">
                 </div>
                 <button type="submit" class="btn btn-primary text-white">Salvar</button>
@@ -97,23 +104,26 @@ if(isset($img_cam)){
 </div>
 <?php
     }
-    ?>
-
+?>
 <!-- Optional JavaScript -->
 <script>
 let info = document.getElementById('info');
-let img = document.querySelector('img');
+let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
+let posicao = document.getElementById('posicao');
 let titulo = document.getElementById('titulo');
 let id = document.getElementById('id');
 let id_prod = document.getElementById('id_prod');
 let desc = document.getElementById('desc');
 let link = document.getElementById('link');
 const add = document.querySelector('#add');
+let img_cam = document.querySelector('#uploadImage');
 let inicio;
 let texto_map = '';
 let texto_modal = '';
 let pos;
+let pos_ini;
+let pos_fim;
 
 add.addEventListener('click', () => adicionar());
 
@@ -121,48 +131,56 @@ function arrastador(e) {
     e.preventDefault();
     selecao.style.width = e.pageX - inicio.x + 'px';
     selecao.style.height = e.pageY - inicio.y + 'px';
+    posicao.style.width = e.offsetX - pos_ini + 'px';
+    posicao.style.height = e.offsetY + (-pos_fim) + 'px';
     gerarInfo();
 }
 
 function adicionar() {
     texto_map +=
-        `<area alt="${titulo.value}" title="${titulo.value}" data-toggle="modal" and data-target="#${id.value}" coords="${pos.left}, ${pos.top}, ${pos.right}, ${pos.bottom}" shape="rect">\n`;
+        `<area alt="${titulo.value}" title="${titulo.value}" data-toggle="modal" and data-target="#${id.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect">\n\t\t`;
     texto_modal += `
-        <div id="${id.value}" class="modal fade"  role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <h2>${titulo.value}</h2>
-                        <p>${desc.value}</p>
-                        <a class="btn btn-primary" href="${link.value}">Comprar</a>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>\n
+<div id="${id.value}" class="modal fade"  role="dialog">
+\t<div class="modal-dialog">
+\t\t<div class="modal-content">
+\t\t\t<div class="modal-header">
+\t\t\t\t<button type="button" class="close" data-dismiss="modal">X</button>
+\t\t\t</div>
+\t\t\t<div class="modal-body">
+\t\t\t\t<h2>${titulo.value}</h2>
+\t\t\t\t<p>${desc.value}</p>
+\t\t\t\t<a class="btn btn-primary" href="${link.value}">Comprar</a>
+\t\t\t</div>
+\t\t\t<div class="modal-footer">
+\t\t\t\t<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+\t\t\t</div>
+\t\t</div>
+\t</div>
+</div>\n
             `;
     gerarInfo();
 }
 
 function gerarInfo() {
-    pos = selecao.getBoundingClientRect();
-
+    pos = posicao.getBoundingClientRect();
+    let file = '<?=$caminho?>' + img_cam.files[0].name;
     if (texto_map != '') {
         var texto = `
-            <input type="hidden" name="id_prod" value="${id_prod.value}">
-            <textarea class="form-control" name="html" rows="12">
-                <div class="container-fluid" style="align: center;">
-                    <img src="<?= $img_cam?>" usemap="#image_map">
-                    <map name="image_map">
-                        ${texto_map}</map>
-                </div>
-                ${texto_modal}
-            </textarea>`;
+<input type="hidden" name="id_prod" value="${id_prod.value}">
+<textarea class="form-control" name="html" rows="50">
+<head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<div class="container-fluid" style="align: center;">
+\t<img src="` + file + `" usemap="#image_map">
+\t<map name="image_map">\n
+\t\t${texto_map}
+\t</map>
+</div>
+${texto_modal}
+</textarea>`;
 
         info.innerHTML = texto;
     }
@@ -172,11 +190,18 @@ img.addEventListener('mousedown', function(e) {
         x: e.pageX,
         y: e.pageY
     };
+    pos_ini = e.offsetX;
+    pos_fim = e.offsetY;
     selecao.style.display = 'block';
     selecao.style.left = inicio.x + 'px';
     selecao.style.top = inicio.y + 'px';
     selecao.style.width = 0;
     selecao.style.height = 0;
+    posicao.style.display = 'block';
+    posicao.style.left = pos_ini + 'px';
+    posicao.style.top = pos_fim + 'px';
+    posicao.style.width = 0;
+    posicao.style.height = 0;
     window.addEventListener('mousemove', arrastador);
 });
 window.addEventListener('mouseup', function(e) {

@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
-	<menu>
-		<add id="Engepecas::top_level" title="Engepecas" module="Engepecas_Diagramas" sortOrder="10" resource="Magento_Backend::content"/>
-		<add id="Engepecas_Diagramas::index_index" title="Diagramas" module="Engepecas_Diagramas" sortOrder="9999" resource="Engepecas_Diagramas::index_index" parent="Engepecas::top_level" action="diagramas/index/index"/>
-	</menu>
-</config>

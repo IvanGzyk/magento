@@ -9,8 +9,7 @@
 }
 
 <?php print_r($_REQUEST);
-//$url=$this->getUrl('admin/diagramas/index/index', ['_secure'=> true]);
-$url=$this->getUrl('admin/diagramas/upload/upload', ['_secure'=> true]);
+$url=$this->getUrl('diagramas/upload/upload', ['_secure'=> true]);
 ?>
 </style>
 
@@ -23,8 +22,6 @@ $url=$this->getUrl('admin/diagramas/upload/upload', ['_secure'=> true]);
         </div>
         <div class="row">
             <div class="col-12">
-                <!--$this->getUrl('admin/diagramas/index/index', ['_secure' => true]);-->
-                <!--<form id="upload" action="/upload.php" method="POST" enctype="multipart/form-data">-->
                 <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data">
                     <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
                         onchange="PreviewImage();" />

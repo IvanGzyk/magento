@@ -22,6 +22,7 @@ class Index extends \Magento\Backend\Block\Template
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Backend\Block\Template\Context $context,
         array $data = []
+
     ) {
         $this->request = $request;
         parent::__construct($context, $data);
@@ -35,14 +36,5 @@ class Index extends \Magento\Backend\Block\Template
     public function getFiles()
     {
         return $this->request->getFilestValue();
-    }
-
-    /**
-     * @return string
-     */
-    public function index()
-    {
-        //Your block code
-        //return __('Hello Developer! This how to get the storename: %1 and this is the way to build a url: %2', $this->_storeManager->getStore()->getName(), $this->getUrl('contacts'));
     }
 }

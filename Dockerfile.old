@@ -1,0 +1,19 @@
+FROM php:7.3-apache
+
+ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
+
+RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions gd bcmath intl xsl pdo_mysql soap zip sockets
+
+    # Update Php Settings
+RUN sed -E -i -e 's/max_execution_time = 30/max_execution_time = 3600/' /usr/local/etc/php/php.ini-development \
+ && sed -E -i -e 's/memory_limit = 128M/memory_limit = -1/' /usr/local/etc/php/php.ini-development  \
+ && sed -E -i -e 's/post_max_size = 8M/post_max_size = 120M/' /usr/local/etc/php/php.ini-development  \
+ && sed -E -i -e 's/upload_max_filesize = 2M/upload_max_filesize = 120M/' /usr/local/etc/php/php.ini-development \
+ && sed -E -i -e 's/max_input_vars = 1000/max_input_vars = 200000/' /usr/local/etc/php/php.ini-development
+ 
+RUN sed -E -i -e 's/max_execution_time = 30/max_execution_time = 3600/' /usr/local/etc/php/php.ini-production \
+ && sed -E -i -e 's/memory_limit = 128M/memory_limit = -1/' /usr/local/etc/php/php.ini-production  \
+ && sed -E -i -e 's/post_max_size = 8M/post_max_size = 120M/' /usr/local/etc/php/php.ini-production  \
+ && sed -E -i -e 's/upload_max_filesize = 2M/upload_max_filesize = 120M/' /usr/local/etc/php/php.ini-production \
+ && sed -E -i -e 's/max_input_vars = 1000/max_input_vars = 200000/' /usr/local/etc/php/php.ini-production

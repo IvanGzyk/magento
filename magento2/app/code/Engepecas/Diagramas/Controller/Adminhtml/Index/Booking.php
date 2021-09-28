@@ -29,12 +29,6 @@ class Booking extends \Magento\Framework\App\Action\Action
         $post = (array) $this->getRequest()->getPost();
 
         if (!empty($post)) {
-            // Retrieve your form data
-            /*$firstname   = $post['firstname'];
-            $lastname    = $post['lastname'];
-            $phone       = $post['phone'];
-            $bookingTime = $post['bookingTime'];
-            // Doing-something with...
 
             // Display the succes form validation message
             $this->messageManager->addSuccessMessage('Booking done !');

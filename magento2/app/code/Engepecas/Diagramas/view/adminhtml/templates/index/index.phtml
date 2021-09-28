@@ -1,5 +1,4 @@
 <?php
-ini_set('memory_limit', '2G');
 /**
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
  */
@@ -81,9 +80,13 @@ if(isset($img_cam)){
             </form><br>
         </div>
     </div>
+    <?php
+    $url=$this->getUrl('admin/diagramas/upload/upload', ['_secure'=> true]);
+    ?>
     <div class="row">
         <div class="col-12">
-            <form action="/upload.php" method="POST" id="upload">
+            <!--<form action="/upload.php" method="POST" id="upload">-->
+            <form action="<?=$url?>" method="POST" id="upload">
                 <div id="info">
                 </div>
                 <button type="submit" class="btn btn-primary text-white">Salvar</button>
@@ -149,11 +152,12 @@ function adicionar() {
             `;
     gerarInfo();
 }
+
 function gerarInfo() {
     pos = posicao.getBoundingClientRect();
-    let file = '<?=$caminho?>'+img_cam.files[0].name;
-        if (texto_map != '') {
-            var texto = `
+    let file = '<?=$caminho?>' + img_cam.files[0].name;
+    if (texto_map != '') {
+        var texto = `
 <input type="hidden" name="id_prod" value="${id_prod.value}">
 <textarea class="form-control" name="html" rows="50">
 <head>
@@ -162,7 +166,7 @@ function gerarInfo() {
 integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <div class="container-fluid" style="align: center;">
-\t<img src="`+file+`" usemap="#image_map">
+\t<img src="` + file + `" usemap="#image_map">
 \t<map name="image_map">\n
 \t\t${texto_map}
 \t</map>
@@ -170,8 +174,8 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
 ${texto_modal}
 </textarea>`;
 
-            info.innerHTML = texto;
-        }
+        info.innerHTML = texto;
+    }
 }
 img.addEventListener('mousedown', function(e) {
     inicio = {

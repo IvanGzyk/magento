@@ -1,4 +1,8 @@
-define(['jquery'], function($){
+function alerta(){
+  return  alert('deu certo!');
+}
+return  alert('deu certo! fora...');
+/*define(['jquery'], function($){
     "use strict";
     return function carrega_img()
     {
@@ -21,4 +25,4 @@ define(['jquery'], function($){
             });
         });
     }
-});
+});*/

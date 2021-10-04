@@ -22,19 +22,43 @@ class Index extends \Magento\Backend\Block\Template
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Backend\Block\Template\Context $context,
         array $data = []
-
     ) {
         $this->request = $request;
         parent::__construct($context, $data);
     }
 
-    public function getPost()
+    public function getDiagramas()
     {
-        return $this->request->getPostValue();
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+        $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
+        $table = $connection->getTableName('magento.catalog_product_entity_text');
+        $sql = "SELECT * FROM ".$table." where attribute_id = 75;";
+        return $connection->fetchAll($sql);
     }
 
-    public function getFiles()
+    /*public function getImagem($id = NULL)
     {
-        return $this->request->getFilestValue();
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+        $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
+
+        $sql = "SELECT g.* from catalog_product_entity_media_gallery g
+        INNER JOIN catalog_product_entity_media_gallery_value c USING(value_id)
+        WHERE c.entity_id LIKE '$id'
+        LIMIT 1";
+
+        return $connection->fetchAll($sql);
     }
+
+    public function getIdPeca($url = NULL){
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+        $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
+
+        $sql = "SELECT entity_id FROM url_rewrite
+        WHERE request_path = '$url'";
+
+        return $connection->fetchAll($sql);
+    }*/
 }

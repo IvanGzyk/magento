@@ -23,6 +23,16 @@ class Index extends \Magento\Backend\App\Action
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory
     ) {
+        if(isset($_FILES['myPhoto']['name'])){
+            $this->salvaImg();
+        }
+
+        if(isset($_POST['sku']) && !empty($_POST['sku'])){
+            $resultado = $this->getNome_Url($_POST['sku']);
+            $resultado = json_encode($resultado);
+            echo $resultado;
+            exit();
+        }
 
         if(isset($_POST['teste']) && !empty($_POST['teste'])){
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -33,11 +43,38 @@ class Index extends \Magento\Backend\App\Action
             echo $caminho.$this->getImagem($result_peca[0]['entity_id']);
             exit();
         }
+
         if (isset($_POST['html'])){
             $this->salve_form();
         }
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
+    }
+
+    public function salvaImg()
+    {
+        $img = $_FILES['myPhoto']['name'];
+        $img_tmp = $_FILES['myPhoto']['tmp_name'];
+        copy($img_tmp,"/var/www/html/magento2/pub/media/img/$img");
+        echo "<script>alert('Imagem salva com sucesso!'); </script>";
+    }
+
+    public function getNome_Url($sku = NULL){
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+        $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
+
+        $sql = "SELECT a.sku, b.value, c.request_path FROM catalog_product_entity a
+        JOIN catalog_product_entity_varchar b USING(entity_id)
+        JOIN url_rewrite c USING(entity_id)
+        WHERE a.sku = '$sku'
+        AND attribute_id = 73
+        AND a.entity_id = b.entity_id
+        AND c.entity_type = 'product'
+        ORDER BY c.entity_type
+        LIMIT 1;";
+
+        return $connection->fetchAll($sql);
     }
 
     /**

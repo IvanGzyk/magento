@@ -27,6 +27,11 @@ class Index extends \Magento\Backend\Block\Template
         parent::__construct($context, $data);
     }
 
+    /**
+     *
+     *Recupera html de geração dos diagramas
+     *
+     **/
     public function getDiagramas()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -37,28 +42,36 @@ class Index extends \Magento\Backend\Block\Template
         return $connection->fetchAll($sql);
     }
 
-    /*public function getImagem($id = NULL)
-    {
+    /**
+     *
+     *tras id e nome dos produtos que pertencem a categoria diagramas
+     *
+     **/
+    public function getIdMotorDiagrama(){
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
         $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
 
-        $sql = "SELECT g.* from catalog_product_entity_media_gallery g
-        INNER JOIN catalog_product_entity_media_gallery_value c USING(value_id)
-        WHERE c.entity_id LIKE '$id'
-        LIMIT 1";
-
-        return $connection->fetchAll($sql);
+        $sql = "SELECT entity_id FROM catalog_category_entity_varchar WHERE VALUE = 'diagramas' LIMIT 1";
+        $resultado = $connection->fetchAll($sql);
+        $cat_id = $resultado[0]['entity_id'];
+        return $this->getProdutoId($cat_id);
     }
 
-    public function getIdPeca($url = NULL){
+    /**
+     *
+     *Tras os ids e categorias de produtos da categoria atraves do is da categoria
+     *
+     **/
+    public function getProdutoId($id = NULL){
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
         $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
 
-        $sql = "SELECT entity_id FROM url_rewrite
-        WHERE request_path = '$url'";
-
-        return $connection->fetchAll($sql);
-    }*/
+        $sql = "SELECT entity_id, VALUE FROM catalog_product_entity_text WHERE entity_id IN (
+            SELECT product_id FROM catalog_category_product WHERE category_id = $id
+        ) AND attribute_id = 85;";
+        $resultado = $connection->fetchAll($sql);
+        return $resultado;
+    }
 }

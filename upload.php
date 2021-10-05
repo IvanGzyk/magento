@@ -1,13 +1,6 @@
 <?php
 require_once 'conexao/conexao.php';
 $db = new Conexao();
-/*$query = "SELECT  * FROM `magento`.`catalog_product_entity_text` LIMIT 1000;";
-print_r($_POST); exit();
-foreach ($db->con->query($query) as $row) {
-    echo '<pre>';
-    print_r($row);
-    echo '</pre>';
-}*/
 $id = $_POST['id_prod'];
 $html = $_POST['html'];
 $data = [

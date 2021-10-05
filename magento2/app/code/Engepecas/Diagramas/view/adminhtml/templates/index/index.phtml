@@ -2,14 +2,29 @@
 /**
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
  */
+<<<<<<< HEAD
 //echo $block->getBaseUrl() . 'admin/diagramas/action/addAttachment';
 
+=======
+
+/*$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
+$upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
+$teste = $bloco->getDiagramas();
+echo '<pre>';
+echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
+echo '</pre>';*/
+>>>>>>> ivan
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
-echo $caminho;
+//$url = $baseURL_l."diagramas/index/index";
+//echo $caminho;
 ?>
+
+<!--<script>
+require(['carrega_img']);
+</script>-->
 
 <head>
     <style>
@@ -24,6 +39,10 @@ echo $caminho;
         position: absolute;
         display: none;
     }
+
+    #salva {
+        display: none;
+    }
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -31,18 +50,11 @@ echo $caminho;
 </head>
 
 <?php
-$img = '';
-$img_tmp = '';
-$img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
-$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
-$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
 
-$url =$baseURL_l."diagramas/index/index";
 
-if($_POST){
-    echo $_POST['html'];
-}
 ?>
 
 <form action="" method="post" enctype="multipart/form-data">
@@ -53,58 +65,66 @@ if($_POST){
     <input type="submit" class="btn btn-primary" value="Enviar">
 </form>
 <?php
-if(isset($img_cam)){
+$img = '';
+$img_tmp = '';
+$img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
 ?>
-<div id="selecao"></div>
+<div id="selecao" style="position:absolute"></div>
 <div id="posicao"></div>
-<img src="<?=$img_cam?>" alt="" />
 <div class="container">
     <div class="row">
         <div class="col-12">
             <form>
-                <div class="form-row">
+            <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Titulo</label>
+                            <label>Titulo</label>
+                            <small>(Titulo que ira aparecer no Modal)</small>
                         <input type="text" class="form-control" name="titulo" id="titulo">
-                    </div>
-                    <div class="form-group col-md-6">
                         <label>ID Modal</label>
+                        <small>(ID para identificar o modal, deve ser unico para cada modal)</small>
                         <input type="text" class="form-control" name="id" id="id">
+                        <label>link para peça</label>
+                        <small>(Link para carrinho de compras da peça selecionada)</small>
+                        <input type="text" class="form-control" name="link" id="link">
+                        <label>ID Produto</label>
+                        <small>(ID do produto para o qual vai mostrar o diagrama)</small>
+                        <input type="text" class="form-control" name="id_prod" id="id_prod">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Descrição</label>
-                        <input type="text" class="form-control" name="desc" id="desc">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>link para produto</label>
-                        <input type="text" class="form-control" name="link" id="link">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>ID Produto</label>
-                        <input type="text" class="form-control" name="id_prod" id="id_prod">
+                        <small>(descrição da peça selecionada)</small>
+                        <textarea class="form-control" name="desc" id="desc" cols="30" rows="10"></textarea>
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary text-white" id="add">Adicionar</button>
+                <button type="button" class="action-default primary add" id="add">Adicionar</button>
             </form><br>
         </div>
     </div>
     <?php
-    $url=$this->getUrl('admin/diagramas/upload/upload', ['_secure'=> true]);
+    $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
     ?>
     <div class="row">
         <div class="col-12">
-            <!--<form action="/upload.php" method="POST" id="upload">-->
             <form action="<?=$url?>" method="POST" id="upload">
                 <div id="info">
                 </div>
-                <button type="submit" class="btn btn-primary text-white">Salvar</button>
+                <button type="submit" id="salva" class="btn btn-primary text-white">Salvar</button>
             </form>
         </div>
     </div>
 </div>
+
 <?php
-    }
+/*$id_produto = $bloco->getIdPeca('embreagem.html');
+$id = $id_produto[0]['entity_id'];
+$image = $bloco->getImagem($id);
+$url_img_prod = $image[0]['value'];
+echo "$url_img_prod";
+$ima = $baseURL_l.'pub/media/catalog/product/'.$url_img_prod;*/
+//$caminho = $baseURL_l.'pub/media/catalog/product';
+//echo "<img id='miniatura' src='$caminho' style='width: 100px'>";
 ?>
+<!--<input id="ima" type="hidden" name="url_img" value="<? //echo $ima?>">-->
 <!-- Optional JavaScript -->
 <script>
 let info = document.getElementById('info');
@@ -116,16 +136,42 @@ let id = document.getElementById('id');
 let id_prod = document.getElementById('id_prod');
 let desc = document.getElementById('desc');
 let link = document.getElementById('link');
+let sava = document.getElementById('salva');
 const add = document.querySelector('#add');
 let img_cam = document.querySelector('#uploadImage');
+//let min = document.getElementById('miniatura').src;
 let inicio;
 let texto_map = '';
 let texto_modal = '';
+let popup = '';
 let pos;
 let pos_ini;
 let pos_fim;
+//let img_min = '';
 
-add.addEventListener('click', () => adicionar());
+require(['jquery', 'jquery/ui'], function($) {
+    var add = $("#add");
+    add.on("click", function(event) {
+        var valor = link.value;
+        var url_prod = $("#link");
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                teste: `${valor}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                //min = retorno;
+                adicionar(retorno);
+                console.log(retorno);
+            }
+        });
+    });
+});
+
 
 function arrastador(e) {
     e.preventDefault();
@@ -136,52 +182,71 @@ function arrastador(e) {
     gerarInfo();
 }
 
-function adicionar() {
+function adicionar(min_img) {
+    popup += `<div data-bind="mageInit: {
+            'Magento_Ui/js/modal/modal':{
+                'type': 'popup',
+                'title': '${titulo.value}',
+                'content': '[id=${id.value}]',
+                'trigger': '[alt=${titulo.value}]',
+                'responsive': true,
+                'modalClass': 'modal',
+                'buttons': [{
+                    text: jQuery.mage.__('Fechar'),
+                    class: '${titulo.value}'
+                }, {
+                    text: jQuery.mage.__('Comprar'),
+                    class: 'btn btn-primary',
+                    click: function (event){
+                           jQuery(location).attr('href', '${link.value}');
+                    }
+                }]
+            }
+        }">
+            <div id="${id.value}">
+                <img src="${min_img}" style="width: 100px">
+                <p>${desc.value}</p>
+            </div>
+        </div>
+    `;
     texto_map +=
-        `<area alt="${titulo.value}" title="${titulo.value}" data-toggle="modal" and data-target="#${id.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect">\n\t\t`;
-    texto_modal += `
-<div id="${id.value}" class="modal fade"  role="dialog">
-\t<div class="modal-dialog">
-\t\t<div class="modal-content">
-\t\t\t<div class="modal-header">
-\t\t\t\t<button type="button" class="close" data-dismiss="modal">X</button>
-\t\t\t</div>
-\t\t\t<div class="modal-body">
-\t\t\t\t<h2>${titulo.value}</h2>
-\t\t\t\t<p>${desc.value}</p>
-\t\t\t\t<a class="btn btn-primary" href="${link.value}">Comprar</a>
-\t\t\t</div>
-\t\t\t<div class="modal-footer">
-\t\t\t\t<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-\t\t\t</div>
-\t\t</div>
-\t</div>
-</div>\n
-            `;
+        `\t<area alt="${titulo.value}" title="${titulo.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect">\n`;
+    texto_modal += `<div id="${id.value}" class="${id.value}"  role="dialog">
+    \t<div class="modal-dialog">
+    \t\t<div class="modal-content">
+    \t\t\t<div class="modal-header">
+    \t\t\t</div>
+    \t\t\t<div class="modal-body">
+    \t\t\t\t<p>${desc.value}</p>
+    \t\t\t\t<a class="btn btn-primary" href="${link.value}">Comprar</a>
+    \t\t\t</div>
+    \t\t\t<div class="modal-footer">
+    \t\t\t</div>
+    \t\t</div>
+    \t</div>
+    </div>\n`;
+    salva.style.display = 'block';
+    id_prod.disabled = true;
     gerarInfo();
+
 }
 
 function gerarInfo() {
     pos = posicao.getBoundingClientRect();
     let file = '<?=$caminho?>' + img_cam.files[0].name;
     if (texto_map != '') {
-        var texto = `
-<input type="hidden" name="id_prod" value="${id_prod.value}">
-<textarea class="form-control" name="html" rows="50">
-<head>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<div class="container-fluid" style="align: center;">
-\t<img src="` + file + `" usemap="#image_map">
-\t<map name="image_map">\n
-\t\t${texto_map}
-\t</map>
-</div>
-${texto_modal}
-</textarea>`;
-
+        var texto = `<input type="hidden" name="id_prod" value="${id_prod.value}">
+        <textarea class="form-control" name="html" rows="50">
+        <div class="container-fluid" style="align: center;">
+        \t<img src="` + file + `" usemap="#image_map">
+        \t<map name="image_map">\n
+        \t\t${texto_map}
+        \t</map>
+        </div>
+        <div class="modal">
+        </div>
+        ${popup}
+        </textarea>`;
         info.innerHTML = texto;
     }
 }

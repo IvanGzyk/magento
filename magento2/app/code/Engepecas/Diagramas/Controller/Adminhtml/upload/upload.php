@@ -10,14 +10,12 @@ class Upload extends \Magento\Backend\App\Action
         }
     }
 
-    public function salva(){$img = $_FILES['myPhoto']['name'];
+    public function salva()
+    {
+        $img = $_FILES['myPhoto']['name'];
         $img_tmp = $_FILES['myPhoto']['tmp_name'];
         copy($img_tmp,"/var/www/html/magento2/pub/media/img/$img");
-        ?>
-        <script>
-        alert('Imagem salva com sucesso!');
-        </script>
-        <?php
+        echo "<script>alert('Imagem salva com sucesso!'); </script>";
     }
 
     public function execute()

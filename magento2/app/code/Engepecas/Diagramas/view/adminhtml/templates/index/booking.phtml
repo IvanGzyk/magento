@@ -9,7 +9,7 @@
 }
 </style>
 <?php
-$url=$this->getUrl('diagramas/upload/upload', ['_secure'=> true]);
+$url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 
 <div id="imagem" style="text-align: center;">
@@ -25,8 +25,8 @@ $url=$this->getUrl('diagramas/upload/upload', ['_secure'=> true]);
                     <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
                         onchange="PreviewImage();" />
                 </form>
-                    <button id="Enviar" class="btn btn-primary">Salvar Imagem</button>
-                    <button id="novo" class="btn btn-primary">Novo Diagrama</button>
+                    <!--<button id="Enviar" class="btn btn-primary">Salvar Imagem</button>
+                    <button id="novo" class="btn btn-primary">Novo Diagrama</button>-->
             </div>
         </div>
     </div>
@@ -35,25 +35,25 @@ $url=$this->getUrl('diagramas/upload/upload', ['_secure'=> true]);
 </br>
 
 <script type="text/javascript">
-novo.addEventListener('click', () => atualizaPagina());
+//novo.addEventListener('click', () => atualizaPagina());
 function PreviewImage() {
     let imagem = document.getElementById("uploadImage");
-    let enviar = document.getElementById('Enviar');
+    //let enviar = document.getElementById('Enviar');
     var oFReader = new FileReader();
     oFReader.readAsDataURL(imagem.files[0]);
     oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
         imagem.style.display = 'none';
-        enviar.style.display = 'block';
+        //enviar.style.display = 'block';
     };
 };
 
 require(['jquery', 'jquery/ui'], function($) {
 
     var form = $("#upload")[0];
-    var enviar = $("#Enviar");
+    //var enviar = $("#Enviar");
 
-    enviar.on("click", function(event) {
+    $("#uploadImage").on("change", function(event) {
         var data = new FormData(form);
         $.ajax({
             url: form.action,

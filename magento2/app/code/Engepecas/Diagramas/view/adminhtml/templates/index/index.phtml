@@ -3,22 +3,23 @@
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
  */
 
-$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
+/*$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
 $upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
 $teste = $bloco->getDiagramas();
 echo '<pre>';
-//echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
-echo '</pre>';
+echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
+echo '</pre>';*/
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
+//$url = $baseURL_l."diagramas/index/index";
 //echo $caminho;
 ?>
 
-<script>
+<!--<script>
 require(['carrega_img']);
-</script>
+</script>-->
 
 <head>
     <style>
@@ -43,14 +44,16 @@ require(['carrega_img']);
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <?php
-$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
-$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
 
-$url =$baseURL_l."diagramas/index/index";
 
 ?>
 <?php
+$img = '';
+$img_tmp = '';
+$img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
 ?>
 <div id="selecao" style="position:absolute"></div>
 <div id="posicao"></div>
@@ -58,10 +61,10 @@ $url =$baseURL_l."diagramas/index/index";
     <div class="row">
         <div class="col-12">
             <form>
-                <div class="form-row">
+            <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Titulo</label>
-                        <small>(Titulo que ira aparecer no Modal)</small>
+                            <label>Titulo</label>
+                            <small>(Titulo que ira aparecer no Modal)</small>
                         <input type="text" class="form-control" name="titulo" id="titulo">
                         <label>ID Modal</label>
                         <small>(ID para identificar o modal, deve ser unico para cada modal)</small>
@@ -84,7 +87,7 @@ $url =$baseURL_l."diagramas/index/index";
         </div>
     </div>
     <?php
-    $url=$this->getUrl('diagramas/index/index', ['_secure'=> true]);
+    $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
     ?>
     <div class="row">
         <div class="col-12">
@@ -98,16 +101,16 @@ $url =$baseURL_l."diagramas/index/index";
 </div>
 
 <?php
-$id_produto = $bloco->getIdPeca('embreagem.html');
+/*$id_produto = $bloco->getIdPeca('embreagem.html');
 $id = $id_produto[0]['entity_id'];
 $image = $bloco->getImagem($id);
 $url_img_prod = $image[0]['value'];
 echo "$url_img_prod";
-$ima = $baseURL_l.'pub/media/catalog/product/'.$url_img_prod;
+$ima = $baseURL_l.'pub/media/catalog/product/'.$url_img_prod;*/
 //$caminho = $baseURL_l.'pub/media/catalog/product';
 //echo "<img id='miniatura' src='$caminho' style='width: 100px'>";
 ?>
-<input id="ima" type="hidden" name="url_img" value="<?=$ima?>">
+<!--<input id="ima" type="hidden" name="url_img" value="<? //echo $ima?>">-->
 <!-- Optional JavaScript -->
 <script>
 let info = document.getElementById('info');
@@ -122,7 +125,7 @@ let link = document.getElementById('link');
 let sava = document.getElementById('salva');
 const add = document.querySelector('#add');
 let img_cam = document.querySelector('#uploadImage');
-let min = document.getElementById('miniatura').src;
+//let min = document.getElementById('miniatura').src;
 let inicio;
 let texto_map = '';
 let texto_modal = '';
@@ -130,7 +133,7 @@ let popup = '';
 let pos;
 let pos_ini;
 let pos_fim;
-let img_min = '';
+//let img_min = '';
 
 require(['jquery', 'jquery/ui'], function($) {
     var add = $("#add");
@@ -165,7 +168,7 @@ function arrastador(e) {
     gerarInfo();
 }
 
-function adicionar(min) {
+function adicionar(min_img) {
     popup += `<div data-bind="mageInit: {
             'Magento_Ui/js/modal/modal':{
                 'type': 'popup',
@@ -178,7 +181,7 @@ function adicionar(min) {
                     text: jQuery.mage.__('Fechar'),
                     class: '${titulo.value}'
                 }, {
-                    text: jQuery.mage.__('New Action'),
+                    text: jQuery.mage.__('Comprar'),
                     class: 'btn btn-primary',
                     click: function (event){
                            jQuery(location).attr('href', '${link.value}');
@@ -187,12 +190,11 @@ function adicionar(min) {
             }
         }">
             <div id="${id.value}">
-                <img src="${min}" style="width: 100px">
+                <img src="${min_img}" style="width: 100px">
                 <p>${desc.value}</p>
             </div>
         </div>
     `;
-
     texto_map +=
         `\t<area alt="${titulo.value}" title="${titulo.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect">\n`;
     texto_modal += `<div id="${id.value}" class="${id.value}"  role="dialog">

@@ -7,24 +7,21 @@
 
 =======
 
-/*$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
+$bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
 $upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
+<<<<<<< HEAD
 $teste = $bloco->getDiagramas();
 echo '<pre>';
 echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
 echo '</pre>';*/
 >>>>>>> ivan
+=======
+>>>>>>> ivan
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
-//$url = $baseURL_l."diagramas/index/index";
-//echo $caminho;
 ?>
-
-<!--<script>
-require(['carrega_img']);
-</script>-->
 
 <head>
     <style>
@@ -50,6 +47,7 @@ require(['carrega_img']);
 </head>
 
 <?php
+<<<<<<< HEAD
 /*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
@@ -65,9 +63,12 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
     <input type="submit" class="btn btn-primary" value="Enviar">
 </form>
 <?php
+=======
+>>>>>>> ivan
 $img = '';
 $img_tmp = '';
 $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
+$motor_diagrama = $bloco->getIdMotorDiagrama();
 ?>
 <div id="selecao" style="position:absolute"></div>
 <div id="posicao"></div>
@@ -75,10 +76,10 @@ $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
     <div class="row">
         <div class="col-12">
             <form>
-            <div class="form-row">
+                <div class="form-row">
                     <div class="form-group col-md-6">
-                            <label>Titulo</label>
-                            <small>(Titulo que ira aparecer no Modal)</small>
+                        <label>Titulo</label>
+                        <small>(Titulo que ira aparecer no Modal)</small>
                         <input type="text" class="form-control" name="titulo" id="titulo">
                         <label>ID Modal</label>
                         <small>(ID para identificar o modal, deve ser unico para cada modal)</small>
@@ -88,7 +89,16 @@ $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
                         <input type="text" class="form-control" name="link" id="link">
                         <label>ID Produto</label>
                         <small>(ID do produto para o qual vai mostrar o diagrama)</small>
-                        <input type="text" class="form-control" name="id_prod" id="id_prod">
+                        <!--<input type="text" class="form-control" name="id_prod" id="id_prod">-->
+                        <select class="form-control" id="id_prod">
+                            <?php
+                            foreach($motor_diagrama as $value){
+                                $id = $value['entity_id'];
+                                $valor = $value['VALUE'];
+                                echo "<option  value='$id'>$valor</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Descrição</label>
@@ -114,17 +124,6 @@ $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
     </div>
 </div>
 
-<?php
-/*$id_produto = $bloco->getIdPeca('embreagem.html');
-$id = $id_produto[0]['entity_id'];
-$image = $bloco->getImagem($id);
-$url_img_prod = $image[0]['value'];
-echo "$url_img_prod";
-$ima = $baseURL_l.'pub/media/catalog/product/'.$url_img_prod;*/
-//$caminho = $baseURL_l.'pub/media/catalog/product';
-//echo "<img id='miniatura' src='$caminho' style='width: 100px'>";
-?>
-<!--<input id="ima" type="hidden" name="url_img" value="<? //echo $ima?>">-->
 <!-- Optional JavaScript -->
 <script>
 let info = document.getElementById('info');
@@ -139,7 +138,6 @@ let link = document.getElementById('link');
 let sava = document.getElementById('salva');
 const add = document.querySelector('#add');
 let img_cam = document.querySelector('#uploadImage');
-//let min = document.getElementById('miniatura').src;
 let inicio;
 let texto_map = '';
 let texto_modal = '';
@@ -147,7 +145,6 @@ let popup = '';
 let pos;
 let pos_ini;
 let pos_fim;
-//let img_min = '';
 
 require(['jquery', 'jquery/ui'], function($) {
     var add = $("#add");
@@ -164,7 +161,6 @@ require(['jquery', 'jquery/ui'], function($) {
                 alert('Erro ao tentar ação!');
             },
             success: function(retorno) {
-                //min = retorno;
                 adicionar(retorno);
                 console.log(retorno);
             }

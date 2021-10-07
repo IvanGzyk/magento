@@ -64,9 +64,10 @@ class Index extends \Magento\Backend\App\Action
         $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
         $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
 
-        $sql = "SELECT a.sku, b.value, c.request_path FROM catalog_product_entity a
+        $sql = "SELECT a.entity_id, a.sku, b.value, c.request_path, d.price FROM catalog_product_entity a
         JOIN catalog_product_entity_varchar b USING(entity_id)
         JOIN url_rewrite c USING(entity_id)
+        JOIN catalog_product_index_price d USING(entity_id)
         WHERE a.sku = '$sku'
         AND attribute_id = 73
         AND a.entity_id = b.entity_id
@@ -90,10 +91,33 @@ class Index extends \Magento\Backend\App\Action
         $html = $_POST['html'];
         $table = $connection->getTableName('magento.catalog_product_entity_text');
         $aspa = "\'";
-        //echo $aspa; exit();
         $html = str_replace("'", $aspa, $html);
-        $sql = "INSERT INTO ".$table." (attribute_id,store_id,entity_id,value) VALUES (75,0,$id,'$html')";
-        return $connection->query($sql);
+        $sql = "SELECT value_id, COUNT(*) total FROM catalog_product_entity_text WHERE entity_id = $id AND attribute_id = 75";
+        $result = $connection->fetchAll($sql);
+        if($result[0]['total'] == 0)
+        {
+            try
+            {
+                $sql = "INSERT INTO ".$table." (attribute_id,store_id,entity_id,value) VALUES (75,0,$id,'$html')";
+                return $connection->query($sql);
+            } catch (Exception $e)
+            {
+                echo "<script>alert('Erro ao tentar cadastrar!');</script>";
+                $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+                header('Location: '.$url);
+            }
+        } else
+        {
+            try{
+                $sql = "UPDATE ".$table." SET entity_id = $id, value = '$html' WHERE value_id = ".$result[0]['value_id'];
+                return $connection->query($sql);
+            } catch (Exception $e)
+            {
+                echo "<script>alert('Erro ao tentar atualizar!');</script>";
+                $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+                header('Location: '.$url);
+            }
+        }
     }
 
     /**
@@ -111,7 +135,6 @@ class Index extends \Magento\Backend\App\Action
 
         return $connection->fetchAll($sql);
     }
-
 
     /**
      *

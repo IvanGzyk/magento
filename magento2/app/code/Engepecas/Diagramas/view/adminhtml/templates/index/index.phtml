@@ -10,12 +10,16 @@
 $bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
 $upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
 <<<<<<< HEAD
+<<<<<<< HEAD
 $teste = $bloco->getDiagramas();
 echo '<pre>';
 echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
 echo '</pre>';*/
 >>>>>>> ivan
 =======
+>>>>>>> ivan
+=======
+
 >>>>>>> ivan
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
@@ -70,6 +74,7 @@ $img_tmp = '';
 $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";
 $motor_diagrama = $bloco->getIdMotorDiagrama();
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+
 ?>
 <div id="selecao" style="position:absolute"></div>
 <div id="posicao"></div>
@@ -80,13 +85,15 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label>SKU</label>
-                        <small>(Titulo que ira aparecer no Modal)</small>
+                        <small>(CODIGO DA PEÇA)</small>
                         <input type="text" class="form-control" name="sku" id="sku">
                         <input type="hidden" class="form-control" name="titulo" id="titulo">
                         <input type="hidden" class="form-control" name="id" id="id">
                         <input type="hidden" class="form-control" name="link" id="link">
-                        <label>ID Produto</label>
-                        <small>(ID do produto para o qual vai mostrar o diagrama)</small>
+                        <input type="hidden" class="form-control" name="price" id="price">
+                        <input type="hidden" class="form-control" name="entity_id" id="entity_id">
+                        <label>Produto</label>
+                        <small>(PRODUTO ONDE VAI MOSTRAR O DIAGRAMA)</small>
                         <select class="form-control" id="id_prod">
                             <?php
                             foreach($motor_diagrama as $value){
@@ -97,11 +104,6 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                             ?>
                         </select>
                     </div>
-                    <!--<div class="form-group col-md-6">
-                        <label>Descrição</label>
-                        <small>(descrição da peça selecionada)</small>
-                        <textarea class="form-control" name="desc" id="desc" cols="30" rows="10"></textarea>
-                    </div>-->
                 </div>
                 <button type="button" class="action-default primary add" id="add">Adicionar</button>
             </form><br>
@@ -117,7 +119,14 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
         </div>
     </div>
 </div>
+<?php
+//$product = $objectManager->create('\Magento\Catalog\Model\Product')->load(5);
+//$cart_helper = $this->helper('Magento\Checkout\Helper\Cart');
 
+//$formKey = $objectManager->create('\Magento\Framework\Data\Form\FormKey')->getFormKey();
+//echo $cart_helper->getAddUrl($product);
+//echo "<br>".$formKey;
+?>
 <!-- Optional JavaScript -->
 <script>
 const add = document.querySelector('#add');
@@ -125,6 +134,8 @@ let link = document.getElementById('link');
 let titulo = document.getElementById('titulo');
 let id = document.getElementById('id');
 let sku = document.getElementById('sku');
+let price = document.getElementById('price');
+let entity_id = document.getElementById('entity_id');
 require(['jquery', 'jquery/ui'], function($) {
     var url_prod = $("#link");
     var add = $("#add");
@@ -144,6 +155,8 @@ require(['jquery', 'jquery/ui'], function($) {
                 var texto_id = json[0]['value'];
                 link.value = json[0]['request_path'];
                 id.value = json[0]['value'];
+                price.value = json[0]['price'];
+                entity_id.value = json[0]['entity_id'];
                 titulo.value = texto_id[0].toUpperCase() + texto_id.substr(1);
             }
         });
@@ -151,6 +164,8 @@ require(['jquery', 'jquery/ui'], function($) {
 
     add.on("click", function(event) {
         var valor = link.value;
+        var price_valor = price.value;
+        var entity_id_valor = entity_id.value;
         $.ajax({
             type: 'post',
             url: url_prod,
@@ -173,12 +188,11 @@ let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
 let posicao = document.getElementById('posicao');
 let id_prod = document.getElementById('id_prod');
-//let desc = document.getElementById('desc');
 let sava = document.getElementById('salva');
 let img_cam = document.querySelector('#uploadImage');
 let inicio;
 let texto_map = '';
-let texto_modal = '';
+//let texto_modal = '';
 let popup = '';
 let pos;
 let pos_ini;
@@ -209,33 +223,23 @@ function adicionar(min_img) {
                     text: jQuery.mage.__('Comprar'),
                     class: 'btn btn-primary',
                     click: function (event){
-                           jQuery(location).attr('href', '${link.value}');
+                           window.open('${link.value}', '_blank');
                     }
                 }]
             }
         }">
-            <div id="${id.value}">
-                <img src="${min_img}" style="width: 100px">
-                <p></p>
+            <div id="${id.value}" style="width: 100%; display: inline;">
+                <div style="width: 50%; display: inline;">
+                    <a href="${link.value}"><img src="${min_img}" style="width: 100px"></a>
+                </div>
+                <div style="width: 50%; display: inline;">
+                    <h3>${sku.value}</h3>
+                    <p>R$ ${price.value}</p>
+                </div>
             </div>
         </div>
     `;
-    texto_map +=
-        `\t<area alt="${titulo.value}" title="${titulo.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect">\n`;
-    texto_modal += `<div id="${id.value}" class="${id.value}"  role="dialog">
-    \t<div class="modal-dialog">
-    \t\t<div class="modal-content">
-    \t\t\t<div class="modal-header">
-    \t\t\t</div>
-    \t\t\t<div class="modal-body">
-    \t\t\t\t<p></p>
-    \t\t\t\t<a class="btn btn-primary" href="${link.value}">Comprar</a>
-    \t\t\t</div>
-    \t\t\t<div class="modal-footer">
-    \t\t\t</div>
-    \t\t</div>
-    \t</div>
-    </div>\n`;
+    texto_map += `\t<button type="button" class="action-default primary"><area alt="${titulo.value}" title="${titulo.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect"></button>\n`;
     salva.style.display = 'block';
     id_prod.disabled = true;
     gerarInfo();

@@ -44,6 +44,20 @@ $caminho = $baseURL_l.'pub/media/img/';
     #salva {
         display: none;
     }
+
+    #imagem {
+        position: relative;
+    }
+
+    #Enviar {
+        display: none;
+    }
+
+    /*.img-responsive {
+        width: 100%;
+        height: auto;
+    }*/
+
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -67,7 +81,33 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
     <input type="submit" class="btn btn-primary" value="Enviar">
 </form>
 <?php
+<<<<<<< HEAD
 =======
+>>>>>>> ivan
+=======
+$url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
+?>
+<div id="imagem">
+    <img class="img-responsive" id="uploadPreview" />
+    <div id="posicao"></div>
+</div>
+<div style="text-align: center;">
+    <div class="container">
+        <div class="row">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data">
+                    <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
+                        onchange="PreviewImage();" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</br>
+<?php
 >>>>>>> ivan
 $img = '';
 $img_tmp = '';
@@ -77,7 +117,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 
 ?>
 <div id="selecao" style="position:absolute"></div>
-<div id="posicao"></div>
+
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -96,6 +136,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                         <small>(PRODUTO ONDE VAI MOSTRAR O DIAGRAMA)</small>
                         <select class="form-control" id="id_prod">
                             <?php
+                                echo "<option  value='0'>Escolha uma opção</option>";
                             foreach($motor_diagrama as $value){
                                 $id = $value['entity_id'];
                                 $valor = $value['VALUE'];
@@ -105,11 +146,17 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                         </select>
                     </div>
                 </div>
-                <button type="button" class="action-default primary add" id="add">Adicionar</button>
+                <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
+                <button type="button" class="action-default primary" id="slv">Salvar</button>
             </form><br>
         </div>
     </div>
     <div class="row">
+        <div class="col-12">
+            <div id="tabela">
+                     <p>Vai aparecer aqui...</p>
+            </div>
+        </div>
         <div class="col-12">
             <form action="<?=$url?>" method="POST" id="upload">
                 <div id="info">
@@ -119,84 +166,52 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
         </div>
     </div>
 </div>
-<?php
-//$product = $objectManager->create('\Magento\Catalog\Model\Product')->load(5);
-//$cart_helper = $this->helper('Magento\Checkout\Helper\Cart');
 
-//$formKey = $objectManager->create('\Magento\Framework\Data\Form\FormKey')->getFormKey();
-//echo $cart_helper->getAddUrl($product);
-//echo "<br>".$formKey;
-?>
 <!-- Optional JavaScript -->
 <script>
-const add = document.querySelector('#add');
-let link = document.getElementById('link');
-let titulo = document.getElementById('titulo');
-let id = document.getElementById('id');
-let sku = document.getElementById('sku');
-let price = document.getElementById('price');
-let entity_id = document.getElementById('entity_id');
-require(['jquery', 'jquery/ui'], function($) {
-    var url_prod = $("#link");
-    var add = $("#add");
-    $('#sku').on('change', function() {
-        var valor_sku = sku.value;
-        $.ajax({
-            type: 'post',
-            url: url_prod,
-            data: {
-                sku: `${valor_sku}`
-            },
-            error: function() {
-                alert('Erro ao tentar ação!');
-            },
-            success: function(retorno) {
-                var json = JSON.parse(retorno);
-                var texto_id = json[0]['value'];
-                link.value = json[0]['request_path'];
-                id.value = json[0]['value'];
-                price.value = json[0]['price'];
-                entity_id.value = json[0]['entity_id'];
-                titulo.value = texto_id[0].toUpperCase() + texto_id.substr(1);
-            }
-        });
-    });
 
-    add.on("click", function(event) {
-        var valor = link.value;
-        var price_valor = price.value;
-        var entity_id_valor = entity_id.value;
+let img_cam = document.querySelector('#uploadImage');
+let sku = document.getElementById('sku');
+let id_prod = document.getElementById('id_prod');
+let tr;
+
+
+function PreviewImage() {
+    let imagem = document.getElementById("uploadImage");
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(imagem.files[0]);
+    oFReader.onload = function(oFREvent) {
+        document.getElementById("uploadPreview").src = oFREvent.target.result;
+        imagem.style.display = 'none';
+    };
+};
+
+require(['jquery', 'jquery/ui'], function($) {
+
+    var form = $("#upload")[0];
+
+    $("#uploadImage").on("change", function(event) {
+        var data = new FormData(form);
         $.ajax({
-            type: 'post',
-            url: url_prod,
-            data: {
-                teste: `${valor}`
-            },
-            error: function() {
-                alert('Erro ao tentar ação!');
-            },
-            success: function(retorno) {
-                adicionar(retorno);
-                console.log(retorno);
+            url: form.action,
+            data: data,
+            contentType: false,
+            processData: false,
+            type: form.method,
+            success: function(data) {
+                console.log(data);
             }
         });
+        return false;
     });
 });
 
-let info = document.getElementById('info');
+
+
+/*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
 let posicao = document.getElementById('posicao');
-let id_prod = document.getElementById('id_prod');
-let sava = document.getElementById('salva');
-let img_cam = document.querySelector('#uploadImage');
-let inicio;
-let texto_map = '';
-//let texto_modal = '';
-let popup = '';
-let pos;
-let pos_ini;
-let pos_fim;
 
 function arrastador(e) {
     e.preventDefault();
@@ -204,67 +219,9 @@ function arrastador(e) {
     selecao.style.height = e.pageY - inicio.y + 'px';
     posicao.style.width = e.offsetX - pos_ini + 'px';
     posicao.style.height = e.offsetY + (-pos_fim) + 'px';
-    gerarInfo();
+    //gerarInfo();
 }
 
-function adicionar(min_img) {
-    popup += `<div data-bind="mageInit: {
-            'Magento_Ui/js/modal/modal':{
-                'type': 'popup',
-                'title': '${titulo.value}',
-                'content': '[id=${id.value}]',
-                'trigger': '[alt=${titulo.value}]',
-                'responsive': true,
-                'modalClass': 'modal',
-                'buttons': [{
-                    text: jQuery.mage.__('Fechar'),
-                    class: '${titulo.value}'
-                }, {
-                    text: jQuery.mage.__('Comprar'),
-                    class: 'btn btn-primary',
-                    click: function (event){
-                           window.open('${link.value}', '_blank');
-                    }
-                }]
-            }
-        }">
-            <div id="${id.value}" style="width: 100%; display: inline;">
-                <div style="width: 50%; display: inline;">
-                    <a href="${link.value}"><img src="${min_img}" style="width: 100px"></a>
-                </div>
-                <div style="width: 50%; display: inline;">
-                    <h3>${sku.value}</h3>
-                    <p>R$ ${price.value}</p>
-                </div>
-            </div>
-        </div>
-    `;
-    texto_map += `\t<button type="button" class="action-default primary"><area alt="${titulo.value}" title="${titulo.value}" coords="${pos_ini}, ${pos_fim}, ${pos.right}, ${pos.bottom}" shape="rect"></button>\n`;
-    salva.style.display = 'block';
-    id_prod.disabled = true;
-    gerarInfo();
-
-}
-
-function gerarInfo() {
-    pos = posicao.getBoundingClientRect();
-    let file = '<?=$caminho?>' + img_cam.files[0].name;
-    if (texto_map != '') {
-        var texto = `<input type="hidden" name="id_prod" value="${id_prod.value}">
-        <textarea class="form-control" name="html" rows="50">
-        <div class="container-fluid" style="align: center;">
-        \t<img src="` + file + `" usemap="#image_map">
-        \t<map name="image_map">\n
-        \t\t${texto_map}
-        \t</map>
-        </div>
-        <div class="modal">
-        </div>
-        ${popup}
-        </textarea>`;
-        info.innerHTML = texto;
-    }
-}
 img.addEventListener('mousedown', function(e) {
     inicio = {
         x: e.pageX,
@@ -284,9 +241,174 @@ img.addEventListener('mousedown', function(e) {
     posicao.style.height = 0;
     window.addEventListener('mousemove', arrastador);
 });
+
 window.addEventListener('mouseup', function(e) {
     inicio = null;
     window.removeEventListener('mousemove', arrastador);
-    gerarInfo();
+    //gerarInfo();
 });
+
+
+let pos;
+require(['jquery', 'jquery/ui'], function($) {
+    var url_prod = $("#link");
+    $('#add').on('click', function(e) {
+        var entity_id_motor_ =  id_prod.value;
+        pos = posicao.getBoundingClientRect();
+        left_ = pos.left - 80;
+        top_ = pos.top + 40;
+        right = pos.right;
+        bottom = pos.bottom;
+        var valor_sku = sku.value;/**Código sku da peça */
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                entity_id_motor: `${entity_id_motor_}`,
+                sku: `${valor_sku}`,
+                left: `${left_}`,
+                top: `${top_}`,
+                left_b: `${right}`,
+                top_b: `${bottom}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                //alert(retorno);
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd(${json[x].diagrama_id});">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+
+    $('#id_prod').on('change', function(){
+        //id_prod.disabled = true;
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                entity_id_motor: `${id_prod.value}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+
+    $('#slv').on('click', function(){
+        var id_motor_ =  id_prod.value;
+        var file_ = '<?=$caminho?>' + img_cam.files[0].name;
+        //alert(id_motor_);
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                id_motor: `${id_motor_}`,
+                file_url: `${file_}`
+            },
+            error: function() {
+                alert('Erro ao tentar ação!');
+            },
+            success: function(retorno) {
+                console.log(retorno);
+            }
+        });
+    });
+});
+
+function DeleteProd(id){
+    require(['jquery', 'jquery/ui'], function($) {
+        var entity_id_motor_ =  id_prod.value;
+        var url_prod = $("#link");
+        $.ajax({
+            type: 'post',
+            url: url_prod,
+            data: {
+                deletar: 'true',
+                entity_id_motor: `${entity_id_motor_}`,
+                id: `${id}`
+            },
+            error: function(){
+
+            },
+            success: function(retorno){
+                var json = JSON.parse(retorno);
+                var x = 0;
+                tr = '';
+                while(x < json.length){
+                    tr += `
+                        <tr>
+                            <th><img src="${json[x].imagem}" style="width: 100px"></th>
+                            <th>${json[x].sku}</th>
+                            <th>${json[x].value}</th>
+                            <th>${json[x].request_path}</th>
+                            <th>${json[x].price}</th>
+                            <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
+                        </tr>
+                    `;
+                    x++;
+                }
+                gerarTabela(tr);
+            }
+        });
+    });
+}
+
+function gerarTabela(tr){
+    let tabela = document.getElementById('tabela');
+    var tabela_texto = `
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col">Miniatura</th>
+            <th scope="col">SKU</th>
+            <th scope="col">Nome</th>
+            <th scope="col">URL</th>
+            <th scope="col">Preço</th>
+            <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tr}
+        </tbody>
+    </table>
+    `;
+
+    tabela.innerHTML = tabela_texto;
+}
 </script>

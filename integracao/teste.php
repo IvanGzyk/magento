@@ -11,7 +11,7 @@
         border: 2px #aaf solid;
         position: absolute;
         display: none;
-        background-color: rgba(255, 0, 0, 0.3);
+        background-color rgba(255, 0, 0, 0.3);
     }
     </style>
 

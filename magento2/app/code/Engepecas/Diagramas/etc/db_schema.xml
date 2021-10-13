@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="engepecas_diagramas_temp" resource="default" engine="innodb" comment="registro de diagramas">
+        <column xsi:type="int" name="diagrama_id" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="motor_enity_id" unsigned="true" nullable="false" identity="false" comment="ID"/>
+        <column xsi:type="varchar" name="sku" nullable="false"  length="64" comment="ID"/>
+        <column xsi:type="int" name="enity_id" unsigned="true" nullable="false" identity="false" comment="ID"/>
+        <column xsi:type="varchar" name="value" nullable="false"  length="255" comment="ID"/>
+        <column xsi:type="varchar" name="request_path" nullable="false"  length="255" comment="ID"/>
+        <column xsi:type="decimal" name="price" nullable="false" scale="6" precision="20" comment="ID"/>
+        <column xsi:type="varchar" name="left" nullable="false"  length="10" comment="ID"/>
+        <column xsi:type="varchar" name="top" nullable="false"  length="10" comment="ID"/>
+        <column xsi:type="varchar" name="left_b" nullable="false"  length="10" comment="ID"/>
+        <column xsi:type="varchar" name="top_b" nullable="false"  length="10" comment="ID"/>
+        <column xsi:type="varchar" name="imagem" nullable="false"  length="255" comment="ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="diagrama_id"/>
+        </constraint>
+    </table>
+</schema>

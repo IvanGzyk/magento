@@ -172,6 +172,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 let img_cam = document.querySelector('#uploadImage');
 let sku = document.getElementById('sku');
 let id_prod = document.getElementById('id_prod');
+let img_motor;
 let tr;
 
 
@@ -199,6 +200,7 @@ require(['jquery', 'jquery/ui'], function($) {
             type: form.method,
             success: function(data) {
                 console.log(data);
+                img_motor = data;
             }
         });
         return false;
@@ -240,6 +242,9 @@ let pos;
 require(['jquery', 'jquery/ui'], function($) {
     var url_prod = $("#link");
     $('#add').on('click', function(e) {
+        if(img_motor === undefined){
+            img_motor = $('#uploadPreview').attr('src');
+        }
         pos = selecao.getBoundingClientRect();
         var wh = $('#uploadPreview');
         var w = wh.width();
@@ -259,13 +264,13 @@ require(['jquery', 'jquery/ui'], function($) {
                 left: `${left_}`,
                 top: `${top_}`,
                 left_b: `${right}`,
-                top_b: `${bottom}`
+                top_b: `${bottom}`,
+                mt_img: `${img_motor}`
             },
             error: function() {
                 alert('Erro ao tentar ação!');
             },
             success: function(retorno) {
-                //alert(retorno);
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';
@@ -303,6 +308,10 @@ require(['jquery', 'jquery/ui'], function($) {
                 var x = 0;
                 tr = '';
                 while(x < json.length){
+                    if(json[x].mt_img != ''){
+                        $('#uploadPreview').attr('src', json[x].mt_img);
+                        //alert(json[x].mt_img);
+                    }
                     tr += `
                         <tr>
                             <th><img src="${json[x].imagem}" style="width: 100px"></th>
@@ -321,8 +330,13 @@ require(['jquery', 'jquery/ui'], function($) {
     });
 
     $('#slv').on('click', function(){
+
+        if(img_motor === undefined){
+            img_motor = $('#uploadPreview').attr('src');
+        }
+        var url_prod = $("#link");
         var id_motor_ =  id_prod.value;
-        var file_ = '<?=$caminho?>' + img_cam.files[0].name;
+        var file_ = img_motor; //'<? //echo $caminho?>' + img_cam.files[0].name;
         //alert(id_motor_);
         $.ajax({
             type: 'post',

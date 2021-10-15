@@ -46,9 +46,10 @@ class Index extends \Magento\Backend\App\Action
             $request_path = $resultado[0]['request_path'];
             $price = $resultado[0]['price'];
             $left = $_POST['left'];
-            $top = $_POST['top'];
+            $top = $_POST['top'] - 10;
             $left_b = $_POST['left_b'];
             $top_b = $_POST['top_b'];
+            $mt_img = $_POST['mt_img'];
 
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
@@ -56,7 +57,7 @@ class Index extends \Magento\Backend\App\Action
             $caminho = $baseURL_l.'pub/media/catalog/product';
             $caminho_img = $caminho.$this->getImagem($enity_id);/** Recebe a url da imagem */
 
-            $resultado = $this->setDiagrama($motor_enity_id, $sku, $enity_id, $value, $request_path, $price, $left, $top, $left_b, $top_b, $caminho_img);
+            $resultado = $this->setDiagrama($motor_enity_id, $sku, $enity_id, $value, $request_path, $price, $left, $top, $left_b, $top_b, $caminho_img, $mt_img);
 
             $diagrama = $this->getDiagramas($motor_enity_id);
             $retorno = json_encode($diagrama);
@@ -174,7 +175,11 @@ class Index extends \Magento\Backend\App\Action
         $img = $_FILES['myPhoto']['name'];
         $img_tmp = $_FILES['myPhoto']['tmp_name'];
         copy($img_tmp,"/var/www/html/magento2/pub/media/img/$img");
-        echo "/var/www/html/magento2/pub/media/img/$img";
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
+        $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
+        $caminho = $baseURL_l."pub/media/img/$img";
+        echo $caminho;
     }
 
     public function getNome_Url($sku = NULL){
@@ -210,7 +215,7 @@ class Index extends \Magento\Backend\App\Action
 
     /**Salva Diagrama table = 'engepecas_diagramas_temp' */
 
-    public function setDiagrama($motor_enity_id, $sku, $enity_id, $value, $request_path, $price, $left, $top, $left_b, $top_b, $caminho_img){
+    public function setDiagrama($motor_enity_id, $sku, $enity_id, $value, $request_path, $price, $left, $top, $left_b, $top_b, $caminho_img, $mt_img){
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
         $connection = $resource->getConnection('\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION');
@@ -233,7 +238,8 @@ class Index extends \Magento\Backend\App\Action
                     `top`,
                     `left_b`,
                     `top_b`,
-                    `imagem`
+                    `imagem`,
+                    `mt_img`
                 ) VALUES
                 (
                     $motor_enity_id,
@@ -246,12 +252,12 @@ class Index extends \Magento\Backend\App\Action
                     '$top',
                     '$left_b',
                     '$top_b',
-                    '$caminho_img'
+                    '$caminho_img',
+                    '$mt_img'
                 )";
                 return $connection->query($sql);
             } catch (Exception $e)
             {
-                echo "<script>alert('Erro ao tentar cadastrar!');</script>";
                 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                 header('Location: '.$url);
             }
@@ -269,13 +275,13 @@ class Index extends \Magento\Backend\App\Action
                 `top` = '$top',
                 `left_b` = '$left_b',
                 `top_b` = '$top_b',
-                `imagem` = '$caminho_img'
+                `imagem` = '$caminho_img',
+                `mt_img` = '$mt_img'
                 WHERE diagrama_id = ".$result[0]['diagrama_id'];
                 //echo $sql; exit();
                 return $connection->query($sql);
             } catch (Exception $e)
             {
-                echo "<script>alert('Erro ao tentar atualizar!');</script>";
                 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
                 header('Location: '.$url);
             }

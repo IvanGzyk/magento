@@ -14,6 +14,7 @@
         <column xsi:type="varchar" name="left_b" nullable="false"  length="10" comment="ID"/>
         <column xsi:type="varchar" name="top_b" nullable="false"  length="10" comment="ID"/>
         <column xsi:type="varchar" name="imagem" nullable="false"  length="255" comment="ID"/>
+        <column xsi:type="varchar" name="mt_img" nullable="false"  length="255" comment="ID"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="diagrama_id"/>
         </constraint>

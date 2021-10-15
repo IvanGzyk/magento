@@ -25,10 +25,11 @@ class Index extends \Magento\Backend\App\Action
     ) {
         if(isset($_FILES['myPhoto']['name'])){
             $this->salvaImg();
+            exit();
         }
 
         if(isset($_POST['deletar']) && !empty($_POST['deletar'])){
-            //echo 'Sucesso! <br> id: '. $_POST['id'];
+
             $this->deletarProd($_POST['id']);
             $resultado = $this->getDiagramas($_POST['entity_id_motor']);
             $resultado = json_encode($resultado);
@@ -56,13 +57,10 @@ class Index extends \Magento\Backend\App\Action
             $caminho_img = $caminho.$this->getImagem($enity_id);/** Recebe a url da imagem */
 
             $resultado = $this->setDiagrama($motor_enity_id, $sku, $enity_id, $value, $request_path, $price, $left, $top, $left_b, $top_b, $caminho_img);
-            //echo $motor_enity_id; exit();
+
             $diagrama = $this->getDiagramas($motor_enity_id);
             $retorno = json_encode($diagrama);
             echo $retorno;
-            //print_r($resultado);
-            //$resultado = json_encode($resultado);
-            //echo $resultado;/**Retorna id_peça, codigo_peça, nome_peça, url_peça, valor_peça*/
             exit();
         }
 
@@ -84,12 +82,12 @@ class Index extends \Magento\Backend\App\Action
         }
 
         if (isset($_POST['id_motor']) && !empty($_POST['id_motor'])){
-            //echo "Sucesso!". $_POST['file_url'];
+
             $resultado = $this->getDiagramas($_POST['id_motor']);
-            //print_r($resultado);
+
             $html = $this->getHtml($resultado, $_POST['file_url']);
             $_POST['html'] = $html;
-            //print_r($html);
+
             $this->salve_form();
             exit();
         }
@@ -103,7 +101,7 @@ class Index extends \Magento\Backend\App\Action
         $titulo_botao = 1;
         foreach($array as $value){
             $texto_map .=  '
-            <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'px; top:'.$value['top'].'px; right: '.$value['left_b'].'px; bottom: '.$value['top_b'].'px;">'.$titulo_botao.'</a>';
+            <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'px; top:'.$value['top'].'px;">'.$titulo_botao.'</a>';
 
             $popup .= '
             <div data-bind="mageInit: {';
@@ -145,28 +143,29 @@ class Index extends \Magento\Backend\App\Action
         return '
         <style>
         .btn_img{
-        text-align: center;
-        background:#FAB600;
-        width:2em;
-        height:2em;
-        position:absolute;
-        border-radius: 100%;
-        border: 1px #000 solid;
-        font-size: 0.7em;
-        font-weight: bold;
+            text-align: center;
+            background:#FAB600;
+            width:2em;
+            height:2em;
+            position:absolute;
+            border-radius: 100%;
+            border: 1px #000 solid;
+            font-size: 0.7em;
+            font-weight: bold;
         }
         .btn_img:before{
             display:block;
         }
+        #imagem {
+            position: initial;
+            top: 100px;
+            left: 105px;
+        }
         </style>
-        <div class="container-fluid" style="align: center;">
-        <img src="'.$file.'" usemap="#image_map">
-        <map name="image_map">\n
+        <div id="imagem">
+            <img id="imagem" src="'.$file.'">
+        </div>
         '.$texto_map.'
-        </map>
-        </div>
-        <div class="modal">
-        </div>
         '.$popup;
     }
 
@@ -175,7 +174,7 @@ class Index extends \Magento\Backend\App\Action
         $img = $_FILES['myPhoto']['name'];
         $img_tmp = $_FILES['myPhoto']['tmp_name'];
         copy($img_tmp,"/var/www/html/magento2/pub/media/img/$img");
-        echo "<script>alert('Imagem salva com sucesso!'); </script>";
+        echo "/var/www/html/magento2/pub/media/img/$img";
     }
 
     public function getNome_Url($sku = NULL){

@@ -36,28 +36,34 @@ $caminho = $baseURL_l.'pub/media/img/';
         background-color: rgba(255, 0, 0, 0.3);
     }
 
-    #posicao {
-        position: absolute;
-        display: none;
-    }
 
     #salva {
         display: none;
     }
 
     #imagem {
-        position: relative;
+        position: initial;
+        top: 100px;
+        left: 105px;
     }
 
     #Enviar {
         display: none;
     }
 
-    /*.img-responsive {
-        width: 100%;
+    #uploadPreview {
+        width: auto;
         height: auto;
-    }*/
+    }
 
+    .page-header{
+        margin-top: 0 !important;
+        padding: 0 3rem !important;
+    }
+    #description{
+        margin-top: 0 !important;
+        padding: 0 0 0 !important;
+    }
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -88,20 +94,16 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 <div id="imagem">
-    <img class="img-responsive" id="uploadPreview" />
-    <div id="posicao"></div>
+    <img id="uploadPreview" />
+    <div id="selecao"></div>
 </div>
-<div style="text-align: center;">
-    <div class="container">
-        <div class="row">
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data">
-                    <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
-                        onchange="PreviewImage();" />
-                </form>
-            </div>
+<div class="row">
+    <div style="text-align: center;">
+        <div class="col-12">
+            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data">
+                <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
+                    onchange="PreviewImage();" />
+            </form>
         </div>
     </div>
 </div>
@@ -116,54 +118,51 @@ $motor_diagrama = $bloco->getIdMotorDiagrama();
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 
 ?>
-<div id="selecao" style="position:absolute"></div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <form action="<?=$url?>">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label>SKU</label>
-                        <small>(CODIGO DA PEÇA)</small>
-                        <input type="text" class="form-control" name="sku" id="sku">
-                        <input type="hidden" class="form-control" name="titulo" id="titulo">
-                        <input type="hidden" class="form-control" name="id" id="id">
-                        <input type="hidden" class="form-control" name="link" id="link">
-                        <input type="hidden" class="form-control" name="price" id="price">
-                        <input type="hidden" class="form-control" name="entity_id" id="entity_id">
-                        <label>Produto</label>
-                        <small>(PRODUTO ONDE VAI MOSTRAR O DIAGRAMA)</small>
-                        <select class="form-control" id="id_prod">
-                            <?php
-                                echo "<option  value='0'>Escolha uma opção</option>";
-                            foreach($motor_diagrama as $value){
-                                $id = $value['entity_id'];
-                                $valor = $value['VALUE'];
-                                echo "<option  value='$id'>$valor</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
+<div class="row">
+    <div class="col-12">
+        <form action="<?=$url?>">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>SKU</label>
+                    <small>(CODIGO DA PEÇA)</small>
+                    <input type="text" class="form-control" name="sku" id="sku">
+                    <input type="hidden" class="form-control" name="titulo" id="titulo">
+                    <input type="hidden" class="form-control" name="id" id="id">
+                    <input type="hidden" class="form-control" name="link" id="link">
+                    <input type="hidden" class="form-control" name="price" id="price">
+                    <input type="hidden" class="form-control" name="entity_id" id="entity_id">
+                    <label>Produto</label>
+                    <small>(PRODUTO ONDE VAI MOSTRAR O DIAGRAMA)</small>
+                    <select class="form-control" id="id_prod">
+                        <?php
+                            echo "<option  value='0'>Escolha uma opção</option>";
+                        foreach($motor_diagrama as $value){
+                            $id = $value['entity_id'];
+                            $valor = $value['VALUE'];
+                            echo "<option  value='$id'>$valor</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
-                <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
-                <button type="button" class="action-default primary" id="slv">Salvar</button>
-            </form><br>
+            </div>
+            <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
+            <button type="button" class="action-default primary" id="slv">Salvar</button>
+        </form><br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div id="tabela">
+                    <p>Vai aparecer aqui...</p>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div id="tabela">
-                     <p>Vai aparecer aqui...</p>
+    <div class="col-12">
+        <form action="<?=$url?>" method="POST" id="upload">
+            <div id="info">
             </div>
-        </div>
-        <div class="col-12">
-            <form action="<?=$url?>" method="POST" id="upload">
-                <div id="info">
-                </div>
-                <button type="submit" id="salva" class="btn btn-primary text-white">Salvar</button>
-            </form>
-        </div>
+            <button type="submit" id="salva" class="btn btn-primary text-white">Salvar</button>
+        </form>
     </div>
 </div>
 
@@ -211,15 +210,11 @@ require(['jquery', 'jquery/ui'], function($) {
 /*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
-let posicao = document.getElementById('posicao');
 
 function arrastador(e) {
     e.preventDefault();
     selecao.style.width = e.pageX - inicio.x + 'px';
     selecao.style.height = e.pageY - inicio.y + 'px';
-    posicao.style.width = e.offsetX - pos_ini + 'px';
-    posicao.style.height = e.offsetY + (-pos_fim) + 'px';
-    //gerarInfo();
 }
 
 img.addEventListener('mousedown', function(e) {
@@ -227,25 +222,17 @@ img.addEventListener('mousedown', function(e) {
         x: e.pageX,
         y: e.pageY
     };
-    pos_ini = e.offsetX;
-    pos_fim = e.offsetY;
     selecao.style.display = 'block';
     selecao.style.left = inicio.x + 'px';
     selecao.style.top = inicio.y + 'px';
     selecao.style.width = 0;
     selecao.style.height = 0;
-    posicao.style.display = 'block';
-    posicao.style.left = pos_ini + 'px';
-    posicao.style.top = pos_fim + 'px';
-    posicao.style.width = 0;
-    posicao.style.height = 0;
     window.addEventListener('mousemove', arrastador);
 });
 
 window.addEventListener('mouseup', function(e) {
     inicio = null;
     window.removeEventListener('mousemove', arrastador);
-    //gerarInfo();
 });
 
 
@@ -253,10 +240,13 @@ let pos;
 require(['jquery', 'jquery/ui'], function($) {
     var url_prod = $("#link");
     $('#add').on('click', function(e) {
+        pos = selecao.getBoundingClientRect();
+        var wh = $('#uploadPreview');
+        var w = wh.width();
+        var h = wh.height();
         var entity_id_motor_ =  id_prod.value;
-        pos = posicao.getBoundingClientRect();
-        left_ = pos.left - 80;
-        top_ = pos.top + 40;
+        left_ = pos.left - $('#imagem').offset().left + $(window).scrollLeft();
+        top_ = pos.top + $(window).scrollTop();//$('#imagem').offset().top; // + $(window).scrollTop();
         right = pos.right;
         bottom = pos.bottom;
         var valor_sku = sku.value;/**Código sku da peça */

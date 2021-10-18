@@ -26,8 +26,9 @@ $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterfa
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
 ?>
-
-<head>
+</div>
+</div>
+</div>
     <style>
     #selecao {
         border: 2px #aaf solid;
@@ -36,15 +37,17 @@ $caminho = $baseURL_l.'pub/media/img/';
         background-color: rgba(255, 0, 0, 0.3);
     }
 
+    .selecao:before {
+        content: ' ';
+    }
 
     #salva {
         display: none;
     }
 
     #imagem {
-        position: initial;
-        top: 100px;
-        left: 105px;
+        position: relative;
+        display: flex;
     }
 
     #Enviar {
@@ -68,6 +71,7 @@ $caminho = $baseURL_l.'pub/media/img/';
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<<<<<<< HEAD
 </head>
 
 <?php
@@ -86,6 +90,8 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
     </div>
     <input type="submit" class="btn btn-primary" value="Enviar">
 </form>
+=======
+>>>>>>> v2
 <?php
 <<<<<<< HEAD
 =======
@@ -93,10 +99,12 @@ $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
 =======
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
+</main>
 <div id="imagem">
     <img id="uploadPreview" />
     <div id="selecao"></div>
 </div>
+<main id="anchor-content" class="page-content">
 <div class="row">
     <div style="text-align: center;">
         <div class="col-12">
@@ -153,9 +161,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 </div>
 <div class="row">
     <div class="col-12">
-        <div id="tabela">
-                    <p>Vai aparecer aqui...</p>
-        </div>
+        <div id="tabela"> </div>
     </div>
     <div class="col-12">
         <form action="<?=$url?>" method="POST" id="upload">
@@ -174,6 +180,8 @@ let sku = document.getElementById('sku');
 let id_prod = document.getElementById('id_prod');
 let img_motor;
 let tr;
+let left_;
+let top_;
 
 
 function PreviewImage() {
@@ -183,6 +191,9 @@ function PreviewImage() {
     oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
         imagem.style.display = 'none';
+        var altura = document.getElementById('imagem').offsetHeight;
+        var largura = window.screen.width;
+        //alert('largura: '+largura+' Altura: '+altura);
     };
 };
 
@@ -212,18 +223,29 @@ require(['jquery', 'jquery/ui'], function($) {
 /*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
+let lag_img = document.getElementById("uploadPreview").offsetWidth;
 
 function arrastador(e) {
+    var rect = e.target.getBoundingClientRect();
     e.preventDefault();
-    selecao.style.width = e.pageX - inicio.x + 'px';
-    selecao.style.height = e.pageY - inicio.y + 'px';
+    selecao.style.width = (e.pageX - rect.left - inicio.x) + 'px';
+    selecao.style.height = (e.pageY - rect.top - inicio.y) + 'px';
+    //alert('left: '+(e.pageX - rect.left - inicio.x)+'top: '+(e.pageY - rect.top - inicio.y));
 }
 
 img.addEventListener('mousedown', function(e) {
+    var rect = e.target.getBoundingClientRect();
     inicio = {
         x: e.pageX,
         y: e.pageY
     };
+    inicio.x = inicio.x - rect.left;
+    inicio.y = inicio.y - rect.top;
+    var altura = document.getElementById('uploadPreview').offsetHeight;
+    var largura = document.getElementById('uploadPreview').offsetWidth;
+    left_ = (inicio.x * 100 / largura);
+    top_ = (inicio.y * 100 / altura);
+    //alert('left: '+inicio.x+'top: '+inicio.y);
     selecao.style.display = 'block';
     selecao.style.left = inicio.x + 'px';
     selecao.style.top = inicio.y + 'px';
@@ -250,8 +272,8 @@ require(['jquery', 'jquery/ui'], function($) {
         var w = wh.width();
         var h = wh.height();
         var entity_id_motor_ =  id_prod.value;
-        left_ = pos.left - $('#imagem').offset().left + $(window).scrollLeft();
-        top_ = pos.top + $(window).scrollTop();//$('#imagem').offset().top; // + $(window).scrollTop();
+        //left_ = pos.left - $('#imagem').offset().left + $(window).scrollLeft();
+        //top_ = pos.top + $(window).scrollTop();//$('#imagem').offset().top; // + $(window).scrollTop();
         right = pos.right;
         bottom = pos.bottom;
         var valor_sku = sku.value;/**Código sku da peça */
@@ -271,6 +293,7 @@ require(['jquery', 'jquery/ui'], function($) {
                 alert('Erro ao tentar ação!');
             },
             success: function(retorno) {
+                //alert(retorno);
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';

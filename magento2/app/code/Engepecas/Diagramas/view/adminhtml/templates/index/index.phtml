@@ -2,25 +2,10 @@
 /**
  * @var $block \Engepecas\Diagramas\Block\Adminhtml\Index\Index
  */
-<<<<<<< HEAD
-//echo $block->getBaseUrl() . 'admin/diagramas/action/addAttachment';
-
-=======
 
 $bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Index');
 $upload_bloco = $block->getLayout()->createBlock('Engepecas\Diagramas\Block\Adminhtml\Index\Booking');
-<<<<<<< HEAD
-<<<<<<< HEAD
-$teste = $bloco->getDiagramas();
-echo '<pre>';
-echo '<textarea class="form-control" name="desc" id="desc" cols="30" rows="10">'.$teste[0]['value'].'</textarea>';
-echo '</pre>';*/
->>>>>>> ivan
-=======
->>>>>>> ivan
-=======
 
->>>>>>> ivan
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
@@ -71,32 +56,7 @@ $caminho = $baseURL_l.'pub/media/img/';
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<<<<<<< HEAD
-</head>
-
 <?php
-<<<<<<< HEAD
-/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-$storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterface');
-$baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();*/
-
-
-?>
-
-<form action="" method="post" enctype="multipart/form-data">
-    <div class="custom-file col-md-4">
-        <input type="file" class="custom-file-input" name="arquivo" id="arquivo">
-        <label class="custom-file-label" for="validatedCustomFile">Carregar diagrama...</label>
-    </div>
-    <input type="submit" class="btn btn-primary" value="Enviar">
-</form>
-=======
->>>>>>> v2
-<?php
-<<<<<<< HEAD
-=======
->>>>>>> ivan
-=======
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 </main>
@@ -118,7 +78,6 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 
 </br>
 <?php
->>>>>>> ivan
 $img = '';
 $img_tmp = '';
 $img_cam = "http://192.168.0.241:5000/magento2/pub/media/img/";

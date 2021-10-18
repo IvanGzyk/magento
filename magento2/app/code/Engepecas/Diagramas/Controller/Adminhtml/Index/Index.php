@@ -46,7 +46,7 @@ class Index extends \Magento\Backend\App\Action
             $request_path = $resultado[0]['request_path'];
             $price = $resultado[0]['price'];
             $left = $_POST['left'];
-            $top = $_POST['top'] - 10;
+            $top = $_POST['top'];
             $left_b = $_POST['left_b'];
             $top_b = $_POST['top_b'];
             $mt_img = $_POST['mt_img'];
@@ -102,7 +102,7 @@ class Index extends \Magento\Backend\App\Action
         $titulo_botao = 1;
         foreach($array as $value){
             $texto_map .=  '
-            <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'px; top:'.$value['top'].'px;">'.$titulo_botao.'</a>';
+            <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
 
             $popup .= '
             <div data-bind="mageInit: {';
@@ -144,29 +144,33 @@ class Index extends \Magento\Backend\App\Action
         return '
         <style>
         .btn_img{
+            position:absolute;
             text-align: center;
             background:#FAB600;
             width:2em;
             height:2em;
-            position:absolute;
             border-radius: 100%;
             border: 1px #000 solid;
             font-size: 0.7em;
             font-weight: bold;
         }
-        .btn_img:before{
+        /*.btn_img:before{
             display:block;
-        }
+        }*/
         #imagem {
-            position: initial;
-            top: 100px;
-            left: 105px;
+            position: relative;
+            display: flex;
+        }
+
+        #view_img{
+            width: auto;
+            height: auto;
         }
         </style>
         <div id="imagem">
-            <img id="imagem" src="'.$file.'">
-        </div>
+            <img id="view_img" src="'.$file.'">
         '.$texto_map.'
+        </div>
         '.$popup;
     }
 

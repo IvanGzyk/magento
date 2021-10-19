@@ -99,8 +99,22 @@ class Index extends \Magento\Backend\App\Action
     public function getHtml($array, $file){
         $popup = '';
         $texto_map = '';
+        $lista_produtos = '';
         $titulo_botao = 1;
         foreach($array as $value){
+            setlocale(LC_MONETARY, 'en_US');
+            $price = floatval($value['price']);
+            $value['price'] = number_format($price,2,",",".");
+            $lista_produtos .= '
+                    <tr>
+                        <td class="btn_img">'.$titulo_botao.'</td>
+                        <td><img src="'.$value['imagem'].'" style="width: 3em"></td>
+                        <td>'.$value['value'].'</td>
+                        <td>'.$value['sku'].'</td>
+                        <td>R$ '.$value['price'].'</td>
+                        <td><a href="'.$value['request_path'].'" class="action primary">Comprar</a></td>
+                    </tr>';
+
             $texto_map .=  '
             <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
 
@@ -134,7 +148,7 @@ class Index extends \Magento\Backend\App\Action
             ."        <a href='".$value['request_path']."'><img src='".$value['imagem']."' style='width: 100px'></a>"
             ."    </div>"
             ."    <div style='width: 50%; display: inline;'>"
-            ."        <h3>".$value['request_path']."</h3>"
+            ."        <h3>".$value['sku']."</h3>"
             ."        <p>R$ ".$value['price']."</p>"
             ."    </div>"
             ."</div>"
@@ -160,16 +174,56 @@ class Index extends \Magento\Backend\App\Action
         #imagem {
             position: relative;
             display: flex;
+            width: 60%;
+            margin-left: 20%;
+        }
+
+        #tb_prod{
+            position: relative;
+            display: flex;
+            text-align: center;
+            width: 100%;
+            margin-top: 5%;
+        }
+
+        table{
+            width: 100%;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;tr:
+            hover {background-color: #FAB600;}
+        }
+
+        th {
+            background-color: #000;
+            color: white;
         }
 
         #view_img{
-            width: auto;
+            width: 100%;
             height: auto;
+        }
+        .value{
+            display: block !important;
         }
         </style>
         <div id="imagem">
             <img id="view_img" src="'.$file.'">
         '.$texto_map.'
+        </div>
+        <div id="tb_prod">
+            <table>
+                <tr>
+                    <th>PÇ</th>
+                    <th>IMG</th>
+                    <th>Nome</th>
+                    <th>SKU</th>
+                    <th>Preço</th>
+                    <th></th>
+                </tr>
+                    '.$lista_produtos.'
+            </table>
         </div>
         '.$popup;
     }

@@ -101,13 +101,14 @@ class Index extends \Magento\Backend\App\Action
         $texto_map = '';
         $lista_produtos = '';
         $titulo_botao = 1;
+        $script = '';
         foreach($array as $value){
             setlocale(LC_MONETARY, 'en_US');
             $price = floatval($value['price']);
             $value['price'] = number_format($price,2,",",".");
             $lista_produtos .= '
-                    <tr>
-                        <td class="btn_img">'.$titulo_botao.'</td>
+                    <tr class="'.$value['sku'].'">
+                        <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" >'.$titulo_botao.'</a></td>
                         <td><img src="'.$value['imagem'].'" style="width: 3em"></td>
                         <td>'.$value['value'].'</td>
                         <td>'.$value['sku'].'</td>
@@ -116,7 +117,7 @@ class Index extends \Magento\Backend\App\Action
                     </tr>';
 
             $texto_map .=  '
-            <a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
+            <a class="btn_img" id="'.$value['sku'].'_" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
 
             $popup .= '
             <div data-bind="mageInit: {';
@@ -130,7 +131,7 @@ class Index extends \Magento\Backend\App\Action
                     'modalClass': 'modal',
                     'buttons': [{
                         text: jQuery.mage.__('Fechar'),
-                        class: '".$value['value']."'
+                        class: 'btn btn-primary'
                     }, {
                         text: jQuery.mage.__('Comprar'),
                         class: 'btn btn-primary',
@@ -153,6 +154,19 @@ class Index extends \Magento\Backend\App\Action
             ."    </div>"
             ."</div>"
             ."</div>";
+
+            $script .= '
+                let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
+                let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
+                '.$value['value'].'.addEventListener("mouseover", function(e) {
+                    btn_'.$value['sku'].'.style.width = "4em";
+                    btn_'.$value['sku'].'.style.height = "4em";
+                });
+                '.$value['value'].'.addEventListener("mouseout", function(e) {
+                    btn_'.$value['sku'].'.style.width = "2em";
+                    btn_'.$value['sku'].'.style.height = "2em";
+                });
+            ';
             $titulo_botao++;
         }
         return '
@@ -207,6 +221,13 @@ class Index extends \Magento\Backend\App\Action
         .value{
             display: block !important;
         }
+        .modal{
+            display: block !important;
+            text-align: center;
+        }
+        .modal-popup .modal-inner-wrap {
+            text-align: center;
+        }
         </style>
         <div id="imagem">
             <img id="view_img" src="'.$file.'">
@@ -224,8 +245,11 @@ class Index extends \Magento\Backend\App\Action
                 </tr>
                     '.$lista_produtos.'
             </table>
-        </div>
-        '.$popup;
+        </div>'.
+        $popup.'
+        <script>'.
+        $script.'
+        </script>';
     }
 
     public function salvaImg()

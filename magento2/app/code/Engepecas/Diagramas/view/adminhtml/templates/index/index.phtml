@@ -152,7 +152,6 @@ function PreviewImage() {
         imagem.style.display = 'none';
         var altura = document.getElementById('imagem').offsetHeight;
         var largura = window.screen.width;
-        //alert('largura: '+largura+' Altura: '+altura);
     };
 };
 
@@ -189,7 +188,6 @@ function arrastador(e) {
     e.preventDefault();
     selecao.style.width = (e.pageX - rect.left - inicio.x) + 'px';
     selecao.style.height = (e.pageY - rect.top - inicio.y) + 'px';
-    //alert('left: '+(e.pageX - rect.left - inicio.x)+'top: '+(e.pageY - rect.top - inicio.y));
 }
 
 img.addEventListener('mousedown', function(e) {
@@ -198,13 +196,14 @@ img.addEventListener('mousedown', function(e) {
         x: e.pageX,
         y: e.pageY
     };
+    //var yPosition += (img.offsetTop - img.scrollTop + img.clientTop);
+    //alert('rect: '+rect.top+' offiset: '+yPosition);
     inicio.x = inicio.x - rect.left;
     inicio.y = inicio.y - rect.top;
     var altura = document.getElementById('uploadPreview').offsetHeight;
     var largura = document.getElementById('uploadPreview').offsetWidth;
     left_ = (inicio.x * 100 / largura);
     top_ = (inicio.y * 100 / altura);
-    //alert('left: '+left_+'top: '+top_);
     selecao.style.display = 'block';
     selecao.style.left = inicio.x + 'px';
     selecao.style.top = inicio.y + 'px';
@@ -231,8 +230,6 @@ require(['jquery', 'jquery/ui'], function($) {
         var w = wh.width();
         var h = wh.height();
         var entity_id_motor_ =  id_prod.value;
-        //left_ = pos.left - $('#imagem').offset().left + $(window).scrollLeft();
-        //top_ = pos.top + $(window).scrollTop();//$('#imagem').offset().top; // + $(window).scrollTop();
         right = pos.right;
         bottom = pos.bottom;
         var valor_sku = sku.value;/**Código sku da peça */
@@ -252,7 +249,6 @@ require(['jquery', 'jquery/ui'], function($) {
                 alert('Erro ao tentar ação!');
             },
             success: function(retorno) {
-                //alert(retorno);
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';
@@ -275,7 +271,6 @@ require(['jquery', 'jquery/ui'], function($) {
     });
 
     $('#id_prod').on('change', function(){
-        //id_prod.disabled = true;
         $.ajax({
             type: 'post',
             url: url_prod,
@@ -292,7 +287,6 @@ require(['jquery', 'jquery/ui'], function($) {
                 while(x < json.length){
                     if(json[x].mt_img != ''){
                         $('#uploadPreview').attr('src', json[x].mt_img);
-                        //alert(json[x].mt_img);
                     }
                     tr += `
                         <tr>

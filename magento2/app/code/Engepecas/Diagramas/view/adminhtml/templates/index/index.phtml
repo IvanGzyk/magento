@@ -150,8 +150,6 @@ function PreviewImage() {
     oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
         imagem.style.display = 'none';
-        var altura = document.getElementById('imagem').offsetHeight;
-        var largura = window.screen.width;
     };
 };
 
@@ -181,13 +179,12 @@ require(['jquery', 'jquery/ui'], function($) {
 /*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
-let lag_img = document.getElementById("uploadPreview").offsetWidth;
 
 function arrastador(e) {
     var rect = e.target.getBoundingClientRect();
     e.preventDefault();
     selecao.style.width = (e.pageX - rect.left - inicio.x) + 'px';
-    selecao.style.height = (e.pageY - rect.top - inicio.y) + 'px';
+    selecao.style.height = (e.pageY - 141 - inicio.y) + 'px';
 }
 
 img.addEventListener('mousedown', function(e) {
@@ -196,10 +193,8 @@ img.addEventListener('mousedown', function(e) {
         x: e.pageX,
         y: e.pageY
     };
-    //var yPosition += (img.offsetTop - img.scrollTop + img.clientTop);
-    //alert('rect: '+rect.top+' offiset: '+yPosition);
     inicio.x = inicio.x - rect.left;
-    inicio.y = inicio.y - rect.top;
+    inicio.y = inicio.y - 141; //rect.top;
     var altura = document.getElementById('uploadPreview').offsetHeight;
     var largura = document.getElementById('uploadPreview').offsetWidth;
     left_ = (inicio.x * 100 / largura);
@@ -226,9 +221,6 @@ require(['jquery', 'jquery/ui'], function($) {
             img_motor = $('#uploadPreview').attr('src');
         }
         pos = selecao.getBoundingClientRect();
-        var wh = $('#uploadPreview');
-        var w = wh.width();
-        var h = wh.height();
         var entity_id_motor_ =  id_prod.value;
         right = pos.right;
         bottom = pos.bottom;
@@ -312,8 +304,7 @@ require(['jquery', 'jquery/ui'], function($) {
         }
         var url_prod = $("#link");
         var id_motor_ =  id_prod.value;
-        var file_ = img_motor; //'<? //echo $caminho?>' + img_cam.files[0].name;
-        //alert(id_motor_);
+        var file_ = img_motor;
         $.ajax({
             type: 'post',
             url: url_prod,

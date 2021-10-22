@@ -109,7 +109,7 @@ class Index extends \Magento\Backend\App\Action
             $lista_produtos .= '
                     <tr class="'.$value['sku'].'">
                         <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" >'.$titulo_botao.'</a></td>
-                        <td><img src="'.$value['imagem'].'" style="width: 3em"></td>
+                        <td><img src="'.$value['imagem'].'" style="width: 5em"></td>
                         <td>'.$value['value'].'</td>
                         <td>'.$value['sku'].'</td>
                         <td>R$ '.$value['price'].'</td>
@@ -159,10 +159,12 @@ class Index extends \Magento\Backend\App\Action
                 let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
                 let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
                 '.$value['value'].'.addEventListener("mouseover", function(e) {
+                    '.$value['value'].'.style.backgroundColor = "#FAB600";
                     btn_'.$value['sku'].'.style.width = "4em";
                     btn_'.$value['sku'].'.style.height = "4em";
                 });
                 '.$value['value'].'.addEventListener("mouseout", function(e) {
+                    '.$value['value'].'.style.backgroundColor = "#FFF";
                     btn_'.$value['sku'].'.style.width = "2em";
                     btn_'.$value['sku'].'.style.height = "2em";
                 });
@@ -179,8 +181,9 @@ class Index extends \Magento\Backend\App\Action
             height:2em;
             border-radius: 100%;
             border: 1px #000 solid;
-            font-size: 0.7em;
+            font-size: 1em;
             font-weight: bold;
+            color: #000 !important;
         }
         /*.btn_img:before{
             display:block;

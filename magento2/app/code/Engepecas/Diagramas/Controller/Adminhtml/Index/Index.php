@@ -122,7 +122,7 @@ class Index extends \Magento\Backend\App\Action
             $popup .= '
             <div data-bind="mageInit: {';
             $popup .= "
-            'Magento_Ui/js/modal/modal':{
+                'Magento_Ui/js/modal/modal':{
                     'type': 'popup',
                     'title': '".$value['value']."',
                     'content': '[id=".$value['sku']."]',
@@ -140,20 +140,19 @@ class Index extends \Magento\Backend\App\Action
                         }
                     }]
                 }
-            }";
-            $popup .= '
-            ">';
+            }".
+            '">';
             $popup .= "
-            <div id='".$value['sku']."' style='width: 100%; display: inline;'>"
-            ."    <div style='width: 50%; display: inline;'>"
-            ."        <a href='".$value['request_path']."'><img src='".$value['imagem']."' style='width: 100px'></a>"
-            ."    </div>"
-            ."    <div style='width: 50%; display: inline;'>"
-            ."        <h3>".$value['sku']."</h3>"
-            ."        <p>R$ ".$value['price']."</p>"
-            ."    </div>"
-            ."</div>"
-            ."</div>";
+                <div id='".$value['sku']."' style='width: 100%; display: inline;'>
+                    <div style='width: 50%; display: inline;'>
+                        <a href='".$value['request_path']."'><img src='".$value['imagem']."' style='width: 100px'></a>
+                    </div>
+                    <div style='width: 50%; display: inline;'>
+                        <h3>".$value['sku']."</h3>
+                        <p>R$ ".$value['price']."</p>
+                    </div>
+                </div>
+            </div>";
 
             $script .= '
                 let '.$value['value'].' = document.querySelector(".'.$value['sku'].'");
@@ -246,7 +245,7 @@ class Index extends \Magento\Backend\App\Action
                     <th>Preço</th>
                     <th></th>
                 </tr>
-                    '.$lista_produtos.'
+                '.$lista_produtos.'
             </table>
         </div>'.
         $popup.'

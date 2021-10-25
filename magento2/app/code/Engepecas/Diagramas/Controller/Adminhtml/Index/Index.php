@@ -108,7 +108,7 @@ class Index extends \Magento\Backend\App\Action
             $value['price'] = number_format($price,2,",",".");
             $lista_produtos .= '
                     <tr class="'.$value['sku'].'">
-                        <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" >'.$titulo_botao.'</a></td>
+                        <td><a class="btn_img" alt="'.$value['value'].'" title="'.$value['value'].'" href="#table" >'.$titulo_botao.'</a></td>
                         <td><img src="'.$value['imagem'].'" style="width: 5em"></td>
                         <td>'.$value['value'].'</td>
                         <td>'.$value['sku'].'</td>
@@ -117,7 +117,7 @@ class Index extends \Magento\Backend\App\Action
                     </tr>';
 
             $texto_map .=  '
-            <a class="btn_img" id="'.$value['sku'].'_" alt="'.$value['value'].'" title="'.$value['value'].'" href="#" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
+            <a class="btn_img" id="'.$value['sku'].'_" alt="'.$value['value'].'" title="'.$value['value'].'" href="#imagem" style="left:'.$value['left'].'%; top:'.$value['top'].'%;">'.$titulo_botao.'</a>';
 
             $popup .= '
             <div data-bind="mageInit: {';
@@ -159,13 +159,11 @@ class Index extends \Magento\Backend\App\Action
                 let btn_'.$value['sku'].' = document.querySelector("#'.$value['sku'].'_");
                 '.$value['value'].'.addEventListener("mouseover", function(e) {
                     '.$value['value'].'.style.backgroundColor = "#FAB600";
-                    btn_'.$value['sku'].'.style.width = "4em";
-                    btn_'.$value['sku'].'.style.height = "4em";
+                    btn_'.$value['sku'].'.style.fontSize = "2em";
                 });
                 '.$value['value'].'.addEventListener("mouseout", function(e) {
                     '.$value['value'].'.style.backgroundColor = "#FFF";
-                    btn_'.$value['sku'].'.style.width = "2em";
-                    btn_'.$value['sku'].'.style.height = "2em";
+                    btn_'.$value['sku'].'.style.fontSize = "1em";
                 });
             ';
             $titulo_botao++;

@@ -52,6 +52,18 @@ $caminho = $baseURL_l.'pub/media/img/';
         margin-top: 0 !important;
         padding: 0 0 0 !important;
     }
+
+    form .form_ {
+        font-size: 1.5em;
+    }
+
+    .small {
+        font-size: 1.5em;
+    }
+
+    /*form{
+        font-size: 1em;
+    }*/
     </style>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -68,7 +80,7 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 <div class="row">
     <div style="text-align: center;">
         <div class="col-12">
-            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data">
+            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
                 <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
                     onchange="PreviewImage();" />
             </form>
@@ -91,17 +103,17 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
         <form action="<?=$url?>">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label>SKU</label>
-                    <small>(CODIGO DA PEÇA)</small>
-                    <input type="text" class="form-control" name="sku" id="sku">
+                    <label style="font-size: 1.5em"><b>SKU</b></label>
+                    <small class="small">(<b>CODIGO DA PEÇA</b>)</small>
+                    <input type="text" class="form-control form_" name="sku" id="sku">
                     <input type="hidden" class="form-control" name="titulo" id="titulo">
                     <input type="hidden" class="form-control" name="id" id="id">
                     <input type="hidden" class="form-control" name="link" id="link">
                     <input type="hidden" class="form-control" name="price" id="price">
                     <input type="hidden" class="form-control" name="entity_id" id="entity_id">
-                    <label>Produto</label>
-                    <small>(PRODUTO ONDE VAI MOSTRAR O DIAGRAMA)</small>
-                    <select class="form-control" id="id_prod">
+                    <label style="font-size: 1.5em"><b>Produto</b></label>
+                    <small>(<b>PRODUTO ONDE VAI MOSTRAR O DIAGRAMA</b>)</small>
+                    <select class="form-control form_" id="id_prod">
                         <?php
                             echo "<option  value='0'>Escolha uma opção</option>";
                         foreach($motor_diagrama as $value){

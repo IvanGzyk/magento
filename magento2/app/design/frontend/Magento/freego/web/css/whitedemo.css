@@ -238,10 +238,10 @@ input[type="checkbox"],
 
 @media screen and (max-width: 767px) {
     .action.nav-toggle::before {
-        color: #222222;
+        color: #2a3042;
     }
     .nav-toggle:hover::before {
-         color: #f2703e;
+         color: #FAB600;
     }
     .page-header {
         background: transparent;
@@ -267,7 +267,7 @@ input[type="checkbox"],
     }
     .block-search .label::before,
     .minicart-wrapper .action.showcart.active::before{
-        color: #222222;
+        color: #2a3042;
     }
 }
 

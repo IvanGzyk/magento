@@ -17,7 +17,7 @@
                         </resource>
                         <resource id="Magento_Reports::report_search" title="Search Terms" translate="title" sortOrder="30" />
                     </resource>
-                    <resource id="Magento_Reports::review" title="Reviews" translate="title" sortOrder="20">
+                    <resource id="Magento_Reports::review" title="Avaliações" translate="title" sortOrder="20">
                         <resource id="Magento_Reports::review_customer" title="By Customers" translate="title" sortOrder="10" />
                         <resource id="Magento_Reports::review_product" title="By Products" translate="title" sortOrder="20" />
                     </resource>

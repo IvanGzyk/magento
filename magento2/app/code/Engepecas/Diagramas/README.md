@@ -37,14 +37,28 @@ Criação de diagramas
 
 ## Configuration
 
-
+### Escolha um Motor
+![Escolha um Motor](view/adminhtml/web/img/Capturar_2.JPG)
+### Selecione as peças no motor (*a cada peça selecionada deve-se clicar em adicionar*)
+![Marque as peças](view/adminhtml/web/img/Capturar.JPG)
+### Visualização na loja
+![Visualização na loja](view/adminhtml/web/img/Capturar_1.JPG)
 
 
 ## Specifications
 
+ - Block
+    - Adminhtml/Index/Index
+    - Index/Index
  - Controller
-	- frontend > diagramas/index/index
-
+	- Adminhtml/Index/index
+    - Adminhtml/upload/upload
+    - Index/Index
+ - View
+    - adminhtml/layout/diagramas_index_index
+    - adminhtml/templates/index
+    - frontend/layout/diagramas_index_index
+    - frontend/templates/index
 
 ## Attributes
 

@@ -109,7 +109,7 @@ input[type="checkbox"],
 }
 
 .catalog-product-view .product-addto-links .towishlist, .catalog-product-view .product-addto-links .tocompare {
-    color: #f2703e;
+    color: #FAB600;
 }
 
 /* responsive css */
@@ -177,7 +177,7 @@ input[type="checkbox"],
 
 @media screen and (max-width: 767px){
     .nav-toggle:hover::before {
-         color: #f2703e;
+         color: #FAB600;
     }
     .navigation .level0 {
         font-size: 14px;

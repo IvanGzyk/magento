@@ -11,15 +11,25 @@ $storeManager = $objectManager->create('\Magento\Store\Model\StoreManagerInterfa
 $baseURL_l = $social_image_url = $storeManager->getStore()->getBaseUrl();
 $caminho = $baseURL_l.'pub/media/img/';
 ?>
-</div>
-</div>
-</div>
-    <style>
+<style>
+    .selecionado{
+        position: absolute;
+        background: #FAB600;
+        border-radius: 100%;
+        border: 1px #000 solid;
+        width: 2em;
+        height: 2em;
+        text-align: center;
+        font-size: 1em;
+    }
     #selecao {
-        border: 2px #aaf solid;
         position: absolute;
         display: none;
-        background-color: rgba(255, 0, 0, 0.3);
+        background: #FAB600;
+        border-radius: 100%;
+        border: 1px #000 solid;
+        width: 2em;
+        height: 2em;
     }
 
     .selecao:before {
@@ -41,7 +51,7 @@ $caminho = $baseURL_l.'pub/media/img/';
 
     #uploadPreview {
         width: auto;
-        height: auto;
+        height: max-content;
     }
 
     .page-header{
@@ -60,33 +70,30 @@ $caminho = $baseURL_l.'pub/media/img/';
     .small {
         font-size: 1.5em;
     }
+    .codigo, .botoes{
+        display: none;
+    }
 
-    /*form{
-        font-size: 1em;
-    }*/
-    </style>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</style>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <?php
 $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 </main>
-<div id="imagem">
-    <img id="uploadPreview" />
-    <div id="selecao"></div>
-</div>
-<main id="anchor-content" class="page-content">
+
 <div class="row">
-    <div style="text-align: center;">
-        <div class="col-12">
-            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
-                <input id="uploadImage" type="file" class="form-control-file" name="myPhoto"
-                    onchange="PreviewImage();" />
-            </form>
-        </div>
+    <div id="imagem" class="col" style="margin-left: 30px">
+        <img id="uploadPreview" />
+        <div id="selecao"></div>
+        <div id="selecionado"></div>
+    </div>
+    <div class="col-6">
+        <div id="tabela"> </div>
     </div>
 </div>
+<main id="anchor-content" class="page-content">
 
 </br>
 <?php
@@ -99,41 +106,50 @@ $url = $this->getUrl('diagramas/index/index', ['_secure'=> true]);
 ?>
 
 <div class="row">
-    <div class="col-12">
-        <form action="<?=$url?>">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label style="font-size: 1.5em"><b>SKU</b></label>
-                    <small class="small">(<b>CODIGO DA PEÇA</b>)</small>
-                    <input type="text" class="form-control form_" name="sku" id="sku">
-                    <input type="hidden" class="form-control" name="titulo" id="titulo">
-                    <input type="hidden" class="form-control" name="id" id="id">
-                    <input type="hidden" class="form-control" name="link" id="link">
-                    <input type="hidden" class="form-control" name="price" id="price">
-                    <input type="hidden" class="form-control" name="entity_id" id="entity_id">
-                    <label style="font-size: 1.5em"><b>Produto</b></label>
-                    <small>(<b>PRODUTO ONDE VAI MOSTRAR O DIAGRAMA</b>)</small>
-                    <select class="form-control form_" id="id_prod">
-                        <?php
-                            echo "<option  value='0'>Escolha uma opção</option>";
-                        foreach($motor_diagrama as $value){
-                            $id = $value['entity_id'];
-                            $valor = $value['VALUE'];
-                            echo "<option  value='$id'>$valor</option>";
-                        }
-                        ?>
-                    </select>
+        <div class="col-md-4">
+            <form id="upload" action="<?=$url?>" method="POST" enctype="multipart/form-data" style="font-size: 1.5em;">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input id="uploadImage" type="file" class="custom-file-input" name="myPhoto" onchange="PreviewImage();" />
+                        <label id="label1" class="custom-file-label">Escolha uma Imagem</label>
+                    </div>
                 </div>
-            </div>
-            <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
-            <button type="button" class="action-default primary" id="slv">Salvar</button>
-        </form><br>
-    </div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <form action="<?=$url?>">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <select class="form-control form_" id="id_prod">
+                            <?php
+                                echo "<option  value='null'>Escolha um Motor</option>";
+                            foreach($motor_diagrama as $value){
+                                $id = $value['entity_id'];
+                                $valor = $value['VALUE'];
+                                echo "<option  value='$id'>$valor</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 codigo">
+                        <input type="text" class="form-control form_" placeholder="CODIGO DA PEÇA (SKU)" name="sku" id="sku">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="titulo" id="titulo">
+                        <input type="hidden" class="form-control" name="id" id="id">
+                        <input type="hidden" class="form-control" name="link" id="link">
+                        <input type="hidden" class="form-control" name="price" id="price">
+                        <input type="hidden" class="form-control" name="entity_id" id="entity_id">
+                    </div>
+                    <div class="form-group col-md-4 botoes">
+                        <button type="button" class="action- scalable action-secondary add" id="add">Adicionar</button>
+                        <button type="button" class="action-default primary" id="slv">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 </div>
 <div class="row">
-    <div class="col-12">
-        <div id="tabela"> </div>
-    </div>
     <div class="col-12">
         <form action="<?=$url?>" method="POST" id="upload">
             <div id="info">
@@ -151,8 +167,12 @@ let sku = document.getElementById('sku');
 let id_prod = document.getElementById('id_prod');
 let img_motor;
 let tr;
+let div;
 let left_;
 let top_;
+let left_b;
+let top_b;
+let qtd_sele;
 
 
 function PreviewImage() {
@@ -161,7 +181,7 @@ function PreviewImage() {
     oFReader.readAsDataURL(imagem.files[0]);
     oFReader.onload = function(oFREvent) {
         document.getElementById("uploadPreview").src = oFREvent.target.result;
-        imagem.style.display = 'none';
+        document.getElementById("label1").innerHTML = 'Alterar Imagem';
     };
 };
 
@@ -186,18 +206,10 @@ require(['jquery', 'jquery/ui'], function($) {
     });
 });
 
-
-
 /*** seleciona area da imagem e pega as coordenadas */
 let img = document.getElementById('uploadPreview');
 let selecao = document.getElementById('selecao');
-
-function arrastador(e) {
-    var rect = e.target.getBoundingClientRect();
-    e.preventDefault();
-    selecao.style.width = (e.pageX - rect.left - inicio.x) + 'px';
-    selecao.style.height = (e.pageY - 141 - inicio.y) + 'px';
-}
+let selecionado = document.getElementById('selecionado');
 
 img.addEventListener('mousedown', function(e) {
     var rect = e.target.getBoundingClientRect();
@@ -211,19 +223,12 @@ img.addEventListener('mousedown', function(e) {
     var largura = document.getElementById('uploadPreview').offsetWidth;
     left_ = (inicio.x * 100 / largura);
     top_ = (inicio.y * 100 / altura);
+    left_b = inicio.x;
+    top_b = inicio.y;
     selecao.style.display = 'block';
-    selecao.style.left = inicio.x + 'px';
+    selecao.style.left = inicio.x+ 'px';
     selecao.style.top = inicio.y + 'px';
-    selecao.style.width = 0;
-    selecao.style.height = 0;
-    window.addEventListener('mousemove', arrastador);
 });
-
-window.addEventListener('mouseup', function(e) {
-    inicio = null;
-    window.removeEventListener('mousemove', arrastador);
-});
-
 
 let pos;
 require(['jquery', 'jquery/ui'], function($) {
@@ -245,8 +250,8 @@ require(['jquery', 'jquery/ui'], function($) {
                 sku: `${valor_sku}`,
                 left: `${left_}`,
                 top: `${top_}`,
-                left_b: `${right}`,
-                top_b: `${bottom}`,
+                left_b: `${left_b}`,
+                top_b: `${top_b}`,
                 mt_img: `${img_motor}`
             },
             error: function() {
@@ -256,6 +261,7 @@ require(['jquery', 'jquery/ui'], function($) {
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';
+                div = '';
                 while(x < json.length){
                     tr += `
                         <tr>
@@ -267,7 +273,9 @@ require(['jquery', 'jquery/ui'], function($) {
                             <th><button type="button" class="btn btn-dark" onclick="DeleteProd(${json[x].diagrama_id});">Remover</button></th>
                         </tr>
                     `;
+                    div += `<div class="selecionado" id="${x}" style="left: ${json[x].left_b}px; top: ${json[x].top_b}px; font-size: 1em;">${x+1}</div>`;
                     x++;
+                    qtd_sele = x;
                 }
                 gerarTabela(tr);
             }
@@ -288,6 +296,7 @@ require(['jquery', 'jquery/ui'], function($) {
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';
+                div = '';
                 while(x < json.length){
                     if(json[x].mt_img != ''){
                         $('#uploadPreview').attr('src', json[x].mt_img);
@@ -302,7 +311,17 @@ require(['jquery', 'jquery/ui'], function($) {
                             <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
                         </tr>
                     `;
+                    div += `<div class="selecionado" id="${x}" style="left: ${json[x].left_b}px; top: ${json[x].top_b}px; font-size: 1em;">${x+1}</div>`;
                     x++;
+                    qtd_sele = x;
+                }
+                if(id_prod.value != 'null'){
+                    document.getElementById("label1").innerHTML = 'Alterar Imagem';
+                    document.querySelector(".codigo").style.display = 'block';
+                    document.querySelector(".botoes").style.display = 'block';
+                }else{
+                    document.querySelector(".codigo").style.display = 'none';
+                    document.querySelector(".botoes").style.display = 'none';
                 }
                 gerarTabela(tr);
             }
@@ -353,6 +372,7 @@ function DeleteProd(id){
                 var json = JSON.parse(retorno);
                 var x = 0;
                 tr = '';
+                div = '';
                 while(x < json.length){
                     tr += `
                         <tr>
@@ -364,7 +384,9 @@ function DeleteProd(id){
                             <th><button type="button" class="btn btn-dark" onclick="DeleteProd('${json[x].diagrama_id}',);">Remover</button></th>
                         </tr>
                     `;
+                    div += `<div class="selecionado" id="${x}" style="left: ${json[x].left_b}px; top: ${json[x].top_b}px; font-size: 1em;">${x+1}</div>`;
                     x++;
+                    qtd_sele = x;
                 }
                 gerarTabela(tr);
             }
@@ -391,7 +413,8 @@ function gerarTabela(tr){
         </tbody>
     </table>
     `;
-
+    selecionado.innerHTML = div;
     tabela.innerHTML = tabela_texto;
 }
+
 </script>

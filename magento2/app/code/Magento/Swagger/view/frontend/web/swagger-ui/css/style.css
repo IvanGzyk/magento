@@ -62,3 +62,7 @@ body {
 .swagger-ui .topbar {
   display: none;
 }
+
+tr .response{
+    display: flex;
+}
